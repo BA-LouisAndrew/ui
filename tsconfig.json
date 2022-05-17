@@ -12,8 +12,12 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
-    "types": ["naive-ui/volar"]
+    "types": ["naive-ui/volar", "vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "components/*": ["./src/components/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts", "tests/**/*.spec.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

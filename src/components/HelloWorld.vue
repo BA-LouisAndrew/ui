@@ -38,7 +38,10 @@ const count = ref(0)
     >Vue 3 Docs</a>
   </p>
 
-  <n-button @click="count++">
+  <n-button
+    primary
+    @click="count++"
+  >
     count is: {{ count }}
   </n-button>
   <p>
