@@ -10,7 +10,7 @@ import eslintPlugin from "vite-plugin-eslint"
 export default defineConfig({
   resolve: {
     alias: {
-      components: resolve(__dirname, "./src/components")
+      "@": resolve(__dirname, "./src")
     }
   },
   plugins: [

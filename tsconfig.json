@@ -15,7 +15,7 @@
     "types": ["naive-ui/volar", "vitest/globals"],
     "baseUrl": ".",
     "paths": {
-      "components/*": ["./src/components/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts", "tests/**/*.spec.ts"],
