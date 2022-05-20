@@ -11,6 +11,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@vicons/ionicons5": "0.12.0",
     "vue": "^3.2.25",
     "vue-router": "4.0.15"
   },
