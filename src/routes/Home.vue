@@ -2,12 +2,11 @@
   <div>
     Home
   </div>
-  <condition-card />
+  <ConditionList />
 </template>
 
 <script setup lang="ts">
-import ConditionCard from "@/components/rule/ConditionCard.vue"
-
+import ConditionList from "@/components/rule/ConditionList.vue"
 </script>
 
 <style scoped>

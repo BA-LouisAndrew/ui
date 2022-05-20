@@ -88,7 +88,15 @@ import { Condition, ConditionType } from "@/types"
 
 import { getAvailableOperators } from "./getAvailableOperator"
 
-const props = defineProps<{ defaultValues?: Condition }>()
+type Props = {
+  defaultValues?: Condition;
+  conditionId?: number;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  conditionId: 0,
+  defaultValues: undefined
+})
 const emit = defineEmits(["input", "delete"])
 
 const formValues = reactive({

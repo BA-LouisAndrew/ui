@@ -18,6 +18,7 @@ module.exports = {
     "simple-import-sort/exports": "error",
     quotes: ["error", "double"],
     semi: ["error", "never"],
+    "indent": ["error", 2],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn", // or error
