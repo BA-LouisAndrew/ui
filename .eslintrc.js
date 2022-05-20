@@ -28,6 +28,7 @@ module.exports = {
       },
     ],
     "object-curly-spacing": ["error", "always"],
+    "vue/multi-word-component-names": "off"
   },
   env: {
     "vue/setup-compiler-macros": true,
