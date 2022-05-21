@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
     ConditionCard: typeof import('./src/components/rule/ConditionCard.vue')['default']
     ConditionList: typeof import('./src/components/rule/ConditionList.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    KeyValueInput: typeof import('./src/components/common/KeyValueInput.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
