@@ -39,12 +39,8 @@
 <script setup lang="ts">
 import { computed, reactive, watch } from "vue"
 
+import { KeyValuePair } from "@/types"
 import { createUuid } from "@/utils"
-
-type KeyValuePair = {
-  key: string;
-  value: string;
-};
 
 const emit = defineEmits(["input"])
 const props = defineProps<{ keyValuePairs?: KeyValuePair[] }>()

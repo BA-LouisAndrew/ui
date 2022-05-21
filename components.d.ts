@@ -12,12 +12,14 @@ declare module '@vue/runtime-core' {
     KeyValueInput: typeof import('./src/components/common/KeyValueInput.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
+    NCode: typeof import('naive-ui')['NCode']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
     NForm: typeof import('naive-ui')['NForm']
     NFormItem: typeof import('naive-ui')['NFormItem']
     NGi: typeof import('naive-ui')['NGi']
     NGrid: typeof import('naive-ui')['NGrid']
     NIcon: typeof import('naive-ui')['NIcon']
+    NIconWrapper: typeof import('naive-ui')['NIconWrapper']
     NInput: typeof import('naive-ui')['NInput']
     NInputNumber: typeof import('naive-ui')['NInputNumber']
     NRadioButton: typeof import('naive-ui')['NRadioButton']
@@ -27,6 +29,7 @@ declare module '@vue/runtime-core' {
     RetryStrategy: typeof import('./src/components/rule/RetryStrategy.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    RuleListItem: typeof import('./src/components/rule-list/RuleListItem.vue')['default']
   }
 }
 

@@ -1,6 +1,7 @@
 import { RouteRecordRaw } from "vue-router"
 
 import Home from "./Home.vue"
+import NewRule from "./NewRule.vue"
 import Rule from "./Rule.vue"
 import RuleList from "./RuleList.vue"
 import Validation from "./Validation.vue"
@@ -10,6 +11,10 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     component: Home,
+  },
+  {
+    path: "/rules/new",
+    component: NewRule
   },
   {
     path: "/rules/:ruleName",
