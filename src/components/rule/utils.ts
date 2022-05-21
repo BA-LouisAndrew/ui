@@ -25,6 +25,8 @@ export const getAvailableOperators = (type: ConditionType) => {
       { label: "Number of items equals", value: "len" },
       { label: "Is empty", value: "empty" },
     ]
+  case "boolean":
+    return [{ label: "Equals", value: "eq" }]
   default:
     return []
   }
