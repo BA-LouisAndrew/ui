@@ -1,3 +1,4 @@
+import { statusCodes } from "@/statusCodes"
 import { ConditionType } from "@/types"
 
 export const getAvailableOperators = (type: ConditionType) => {
@@ -22,9 +23,11 @@ export const getAvailableOperators = (type: ConditionType) => {
       { label: "Includes", value: "incl" },
       { label: "Excludes", value: "excl" },
       { label: "Number of items equals", value: "len" },
-      { label: "Is empty", value: "empty" }
+      { label: "Is empty", value: "empty" },
     ]
   default:
     return []
   }
 }
+
+export const statusCodeOptions = statusCodes

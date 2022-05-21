@@ -7,3 +7,8 @@ export type Condition = {
  operator: Operator
  value: any
 }
+
+export type RetryStrategy = {
+    limit: 1 | 2 | 3;
+    statusCodes: number[]; // TODO: validate possible HTTP status codes
+}
