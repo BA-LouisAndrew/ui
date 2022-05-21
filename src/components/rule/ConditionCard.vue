@@ -68,11 +68,6 @@
           @click="emit('delete')"
         >
           Delete
-          <template #icon>
-            <n-icon>
-              <trash-bin />
-            </n-icon>
-          </template>
         </n-button>
       </n-space>
     </n-form>
@@ -80,13 +75,12 @@
 </template>
 
 <script setup lang="ts">
-import { TrashBin } from "@vicons/ionicons5"
 import { FormInst, FormItemInst, FormItemRule } from "naive-ui"
 import { computed, reactive, ref, watch } from "vue"
 
 import { Condition, ConditionType } from "@/types"
 
-import { getAvailableOperators } from "./getAvailableOperator"
+import { getAvailableOperators } from "./utils"
 
 type Props = {
   defaultValues?: Condition;

@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { computed } from "@vue/reactivity"
-import { reactive, ref } from "vue"
+import { ref } from "vue"
 
 import { Condition } from "@/types"
 import { createUuid } from "@/utils"
