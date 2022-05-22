@@ -15,13 +15,13 @@ describe("Condition card", () => {
     const { getByPlaceholderText, emitted } = renderComponent()
 
     await fireEvent.update(getByPlaceholderText("Path"), "Hi mom")
-    expect(emitted()["input"]).toBeTruthy()
+    expect(emitted()["update:value"]).toBeTruthy()
   })
 
   it("displays default value if provided on props", () => {
     const { getByPlaceholderText } = renderComponent({
       props: {
-        defaultValues: {
+        value: {
           path: "$.statusCode",
           type: "number",
           operator: "equals",

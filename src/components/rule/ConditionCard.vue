@@ -83,21 +83,21 @@ import { Condition, ConditionType } from "@/types"
 import { getAvailableOperators } from "./utils"
 
 type Props = {
-  defaultValues?: Condition;
-  conditionId?: number;
+  value?: Condition;
+  conditionId?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  conditionId: 0,
-  defaultValues: undefined
+  conditionId: "default",
+  value: undefined,
 })
-const emit = defineEmits(["input", "delete"])
+const emit = defineEmits(["update:value", "delete"])
 
 const formValues = reactive({
-  path: props.defaultValues?.path || "",
-  type: props.defaultValues?.type || null,
-  operator: props.defaultValues?.operator || null,
-  value: props.defaultValues ? `${props.defaultValues.value}` : "",
+  path: props.value?.path || "",
+  type: props.value?.type || null,
+  operator: props.value?.operator || null,
+  value: props.value ? `${props.value.value}` : "",
 })
 
 const valueFormRule = computed<FormItemRule[]>(() => [
@@ -139,7 +139,7 @@ watch(
   }
 )
 
-watch(formValues, (value) => emit("input", value))
+watch(formValues, (value) => emit("update:value", value))
 
 const typeSelectOptions = [
   {
@@ -153,6 +153,10 @@ const typeSelectOptions = [
   {
     label: "List / Array",
     value: "array",
+  },
+  {
+    label: "Boolean (true or false)",
+    value: "boolean",
   },
 ]
 

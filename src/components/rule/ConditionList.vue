@@ -33,17 +33,17 @@
 
     <n-space vertical>
       <span
-        v-if="!conditionIds.length"
+        v-if="!conditions.length"
         class="info"
       >
-        Please at least one condition, by which the rule should be
-        evaluated!
+        Please at least one condition, by which the rule should be evaluated!
       </span>
       <condition-card
-        v-for="conditionId in conditionIds"
-        :key="conditionId"
-        :default-values="getDefaultCondition(conditionId)"
-        @delete="deleteCondition(conditionId)"
+        v-for="condition in conditions"
+        :key="condition.id"
+        v-model:value="condition.condition"
+        :condition-id="condition.id"
+        @delete="deleteCondition(condition.id)"
       />
     </n-space>
   </n-space>
@@ -62,18 +62,20 @@ const props = defineProps<{
   conditions?: Condition[];
   booleanConditionValue?: "any" | "all";
 }>()
-const defaultConditions = (props.conditions || []).map((condition) => ({
-  ...condition,
-  id: createUuid(),
-}))
 
-const conditionIds = ref<string[]>(defaultConditions.map(({ id }) => id))
+const conditions = ref<{ condition?: Condition; id: string }[]>(
+  (props.conditions || []).map((condition) => ({
+    condition,
+    id: createUuid(),
+  }))
+)
+
 const booleanCondition = ref<"any" | "all" | null>(
   props.booleanConditionValue || null
 )
 
 const displayBooleanConditionInput = computed(
-  () => conditionIds.value.length > 1
+  () => conditions.value.length > 1
 )
 
 const booleanConditionOptions = [
@@ -84,17 +86,12 @@ const booleanConditionOptions = [
   { value: "all", label: "ALL" },
 ]
 
-const addNewCondition = () =>
-  (conditionIds.value = [...conditionIds.value, createUuid()])
+const addNewCondition = () => {
+  conditions.value = [...conditions.value, { id: createUuid(), condition: undefined }]
+}
 
-const deleteCondition = (conditionId: string) =>
-  (conditionIds.value = conditionIds.value.filter((id) => id !== conditionId))
-
-const getDefaultCondition = (conditionId: string) =>
-  defaultConditions.find(({ id }) => id === conditionId)
-
-const getConditions = () => {
-  // 
+const deleteCondition = (conditionId: string) => {
+  conditions.value = conditions.value.filter(({ id }) => id !== conditionId)
 }
 </script>
 
