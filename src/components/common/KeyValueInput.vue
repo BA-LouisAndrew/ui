@@ -18,12 +18,17 @@
         placeholder="Value"
       />
       <n-button
-        quaternary
+        secondary
         type="error"
-        size="tiny"
+        size="small"
+        data-testid="delete-button"
         @click="deleteKeyValuePair(id)"
       >
-        Delete
+        <template #icon>
+          <n-icon>
+            <trash-sharp />
+          </n-icon>
+        </template>
       </n-button>
     </n-space>
     <n-button
@@ -37,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import { TrashSharp } from "@vicons/ionicons5"
 import { computed, reactive, watch } from "vue"
 
 import { KeyValuePair } from "@/types"

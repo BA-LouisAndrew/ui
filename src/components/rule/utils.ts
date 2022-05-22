@@ -1,5 +1,12 @@
 import { statusCodes } from "@/statusCodes"
-import { ConditionType, HTTPMethod, ValidationRule } from "@/types"
+import {
+  Condition,
+  ConditionType,
+  GenericObject,
+  HTTPMethod,
+  KeyValuePair,
+  ValidationRule,
+} from "@/types"
 
 export type RuleFormValuesType = Pick<
   ValidationRule,
@@ -8,6 +15,8 @@ export type RuleFormValuesType = Pick<
   method: HTTPMethod | null;
   enabled: boolean;
 };
+
+export type ConditionsProps = { conditions?: Condition[], booleanConditionValue?: "any" | "all" }
 
 export const getAvailableOperators = (type: ConditionType) => {
   switch (type) {
@@ -63,6 +72,53 @@ export const getFormValuesFromValidationRule = (
     name,
     method,
     enabled: !skip,
+  }
+}
+
+export const httpMethodOptions: { label: string; value: HTTPMethod }[] = [
+  {
+    label: "Get",
+    value: "GET",
+  },
+  { label: "Post", value: "POST" },
+  { label: "Put", value: "PUT" },
+]
+
+export const genericObjectToKeyValuePairs = (object: GenericObject): KeyValuePair[] =>
+  Object.entries(object).map(([key, value]) => ({ key, value }))
+
+export const getConditionsProps = (validationRule?: ValidationRule) : ConditionsProps => {
+  
+  if (!validationRule?.condition) {
+    return {
+      conditions: [],
+      booleanConditionValue: undefined
+    }
+  }
+
+  const { condition } = validationRule
+  
+  const conditionKeys = Object.keys(condition)
+  const isUsingAny = conditionKeys.includes("any")
+  const isUsingAll = conditionKeys.includes("all")
+
+  if (isUsingAll) {
+    return {
+      conditions:  (condition as any)["all"] as Condition[],
+      booleanConditionValue: "all"
+    }
+  }
+
+  if (isUsingAny) {
+    return {
+      conditions: (condition as any)["any"] as Condition[],
+      booleanConditionValue: "any"
+    }
+  }
+  
+  return {
+    conditions: [condition as Condition],
+    booleanConditionValue: undefined
   }
 }
 

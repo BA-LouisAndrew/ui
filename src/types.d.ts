@@ -20,10 +20,10 @@ export type Condition = {
 
 export type BooleanCondition =
   | {
-      all: Condition[];
+      "all": Condition[];
     }
   | {
-      any: Condition[];
+      "any": Condition[];
     };
 
 export type RetryStrategy = {
@@ -41,7 +41,7 @@ export type ValidationRule = {
     requestUrlParameter?: GenericObject;
     skip: boolean;
     requestBody?: GenericObject;
-    condition?: Condition | BooleanCondition;
+    condition: Condition | BooleanCondition;
     method: HTTPMethod; // TODO: validate possible HTTP method
     failScore: number;
     endpoint: string;

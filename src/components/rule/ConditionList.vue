@@ -1,6 +1,9 @@
 <template>
   <n-space vertical>
-    <n-space justify="space-between">
+    <n-space
+      justify="space-between"
+      align="center"
+    >
       <h3>Conditions</h3>
       <n-button
         secondary
@@ -29,6 +32,13 @@
     </n-space>
 
     <n-space vertical>
+      <span
+        v-if="!conditionIds.length"
+        class="info"
+      >
+        Please at least one condition, by which the rule should be
+        evaluated!
+      </span>
       <condition-card
         v-for="conditionId in conditionIds"
         :key="conditionId"
@@ -48,14 +58,19 @@ import { createUuid } from "@/utils"
 
 import ConditionCard from "./ConditionCard.vue"
 
-const props = defineProps<{ conditions?: Condition[] }>()
+const props = defineProps<{
+  conditions?: Condition[];
+  booleanConditionValue?: "any" | "all";
+}>()
 const defaultConditions = (props.conditions || []).map((condition) => ({
   ...condition,
   id: createUuid(),
 }))
 
 const conditionIds = ref<string[]>(defaultConditions.map(({ id }) => id))
-const booleanCondition = ref<"any" | "all" | null>(null)
+const booleanCondition = ref<"any" | "all" | null>(
+  props.booleanConditionValue || null
+)
 
 const displayBooleanConditionInput = computed(
   () => conditionIds.value.length > 1
@@ -77,6 +92,10 @@ const deleteCondition = (conditionId: string) =>
 
 const getDefaultCondition = (conditionId: string) =>
   defaultConditions.find(({ id }) => id === conditionId)
+
+const getConditions = () => {
+  // 
+}
 </script>
 
 <style scoped></style>

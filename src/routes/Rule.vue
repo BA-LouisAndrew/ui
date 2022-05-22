@@ -12,9 +12,10 @@
 import { onBeforeMount, ref } from "vue"
 import { useRoute } from "vue-router"
 
-import RuleForm from "@/components/Rule/RuleForm.vue"
+import RuleForm from "@/components/rule/RuleForm.vue"
 import { useFetch } from "@/composable/useFetch"
 import { ValidationRule } from "@/types"
+
 const { params } = useRoute()
 const { get: getValidationRule, hasError, isLoading } = useFetch<ValidationRule>("/rules/" + params.ruleName)
 

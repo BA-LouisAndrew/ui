@@ -24,13 +24,13 @@ describe("Key-Value input", () => {
   })
 
   it("deletes the key-value input when the `Delete` button next to key-value input fields is clicked", async () => {
-    const { getByRole, getAllByRole, queryAllByTestId } = renderComponent()
+    const { getByRole, queryAllByTestId } = renderComponent()
 
     expect(queryAllByTestId("key-value-field").length).toBe(0)
     await fireEvent.click(getByRole("button", { name: "Add" }))
     await fireEvent.click(getByRole("button", { name: "Add" }))
 
-    await fireEvent.click(getAllByRole("button", { name: "Delete" })[0])
+    await fireEvent.click(queryAllByTestId("delete-button")[0])
 
     expect(queryAllByTestId("key-value-field").length).toBe(1)
   })

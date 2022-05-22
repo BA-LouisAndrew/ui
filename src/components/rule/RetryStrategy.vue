@@ -59,6 +59,12 @@
         </n-grid>
       </n-form>
     </n-card>
+    <span
+      v-else
+      class="info"
+    >
+      Adding a retry strategy is optional, but it can be useful to retry the request in case the external endpoint is not accessible.
+    </span>
   </n-space>
 </template>
 
