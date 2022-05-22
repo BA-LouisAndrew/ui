@@ -92,12 +92,11 @@
             vertical
           >
             <condition-list
-              ref="conditionListRef"
-              :conditions="conditionProps.conditions"
-              :boolean-condition-value="conditionProps.booleanConditionValue"
+              v-model:conditions="condition.conditions"
+              v-model:boolean-condition="condition.booleanConditionValue"
             />
-            
-            <retry-strategy :retry-strategy="props.rule?.retryStrategy" />
+
+            <retry-strategy v-model:retry-strategy="retryStrategy" />
           </n-space>
         </n-gi>
       </n-grid>
@@ -141,7 +140,6 @@ const props = defineProps<{ rule?: ValidationRule }>()
 const emit = defineEmits(["create", "update", "delete"])
 
 const formRef = ref<FormInst>()
-const conditionListRef = ref<typeof ConditionList>()
 
 const formValues = reactive(getFormValuesFromValidationRule(props.rule))
 const isEditingRule = !!props.rule
@@ -149,14 +147,13 @@ const requestUrlParameter = genericObjectToKeyValuePairs(
   props.rule?.requestUrlParameter || {}
 )
 const requestBody = genericObjectToKeyValuePairs(props.rule?.requestBody || {})
-
-const conditionProps = getConditionsProps(props.rule)
+const condition = reactive(getConditionsProps(props.rule))
+const retryStrategy = ref(props.rule?.retryStrategy || undefined)
 
 const createRule = () => {
   //
 }
 const updateRule = () => {
-  
   emit("update")
 }
 const deleteRule = () => {

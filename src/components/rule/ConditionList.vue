@@ -51,16 +51,17 @@
 
 <script setup lang="ts">
 import { computed } from "@vue/reactivity"
-import { ref } from "vue"
+import { ref, watch } from "vue"
 
 import { Condition } from "@/types"
 import { createUuid } from "@/utils"
 
 import ConditionCard from "./ConditionCard.vue"
 
+const emit = defineEmits(["update:conditions", "update:boolean-condition"])
 const props = defineProps<{
   conditions?: Condition[];
-  booleanConditionValue?: "any" | "all";
+  booleanCondition?: "any" | "all";
 }>()
 
 const conditions = ref<{ condition?: Condition; id: string }[]>(
@@ -71,7 +72,7 @@ const conditions = ref<{ condition?: Condition; id: string }[]>(
 )
 
 const booleanCondition = ref<"any" | "all" | null>(
-  props.booleanConditionValue || null
+  props.booleanCondition || null
 )
 
 const displayBooleanConditionInput = computed(
@@ -87,12 +88,21 @@ const booleanConditionOptions = [
 ]
 
 const addNewCondition = () => {
-  conditions.value = [...conditions.value, { id: createUuid(), condition: undefined }]
+  conditions.value = [
+    ...conditions.value,
+    { id: createUuid(), condition: undefined },
+  ]
 }
 
 const deleteCondition = (conditionId: string) => {
   conditions.value = conditions.value.filter(({ id }) => id !== conditionId)
 }
+
+watch(conditions, () => emit("update:conditions", conditions.value))
+
+watch(booleanCondition, () =>
+  emit("update:boolean-condition", booleanCondition)
+)
 </script>
 
 <style scoped></style>
