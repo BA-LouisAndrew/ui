@@ -30,6 +30,9 @@ export type RetryStrategy = {
     limit: 1 | 2 | 3;
     statusCodes: number[]; // TODO: validate possible HTTP status codes
 }
+
+export type HTTPMethod = "GET" | "PUT" | "POST"
+
 /**
  * Model for the validation rule that would be stored in the database and evaluated during runtime.
  */
@@ -38,8 +41,8 @@ export type ValidationRule = {
     requestUrlParameter?: GenericObject;
     skip: boolean;
     requestBody?: GenericObject;
-    condition: Condition | BooleanCondition;
-    method: string; // TODO: validate possible HTTP method
+    condition?: Condition | BooleanCondition;
+    method: HTTPMethod; // TODO: validate possible HTTP method
     failScore: number;
     endpoint: string;
     priority: number;

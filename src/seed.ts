@@ -6,7 +6,7 @@ export const conditions: Condition[] = [
     path: "$.statusCode",
     type: "number",
     value: 200,
-    failMessage: ""
+    failMessage: "",
   },
 ]
 
