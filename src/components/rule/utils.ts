@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { statusCodes } from "@/statusCodes"
 import {
+  BooleanCondition,
   Condition,
   ConditionType,
   GenericObject,
@@ -17,7 +18,10 @@ export type RuleFormValuesType = Pick<
   enabled: boolean;
 };
 
-export type ConditionsProps = { conditions?: Condition[], booleanConditionValue?: "any" | "all" }
+export type ConditionsProps = {
+  conditions?: Condition[];
+  booleanConditionValue?: "any" | "all";
+};
 
 export const getAvailableOperators = (type: ConditionType) => {
   switch (type) {
@@ -85,42 +89,64 @@ export const httpMethodOptions: { label: string; value: HTTPMethod }[] = [
   { label: "Put", value: "PUT" },
 ]
 
-export const genericObjectToKeyValuePairs = (object: GenericObject): KeyValuePair[] =>
+export const genericObjectToKeyValuePairs = (
+  object: GenericObject
+): KeyValuePair[] =>
   Object.entries(object).map(([key, value]) => ({ key, value }))
 
-export const getConditionsProps = (validationRule?: ValidationRule) : ConditionsProps => {
-  
+export const keyValuePairsToGenericObject = (
+  pairs: KeyValuePair[]
+): GenericObject =>
+  pairs.reduce((a, { key, value }) => ({ ...a, [key]: value }), {})
+
+export const getConditionsProps = (
+  validationRule?: ValidationRule
+): ConditionsProps => {
   if (!validationRule?.condition) {
     return {
       conditions: [],
-      booleanConditionValue: undefined
+      booleanConditionValue: undefined,
     }
   }
 
   const { condition } = validationRule
-  
+
   const conditionKeys = Object.keys(condition)
   const isUsingAny = conditionKeys.includes("any")
   const isUsingAll = conditionKeys.includes("all")
 
   if (isUsingAll) {
     return {
-      conditions:  (condition as any)["all"] as Condition[],
-      booleanConditionValue: "all"
+      conditions: (condition as any)["all"] as Condition[],
+      booleanConditionValue: "all",
     }
   }
 
   if (isUsingAny) {
     return {
       conditions: (condition as any)["any"] as Condition[],
-      booleanConditionValue: "any"
+      booleanConditionValue: "any",
     }
   }
-  
+
   return {
     conditions: [condition as Condition],
-    booleanConditionValue: undefined
+    booleanConditionValue: undefined,
   }
+}
+
+export const getConditionFromProps = (
+  conditions: Condition[],
+  booleanConditionValue: string | undefined | null
+): Condition | BooleanCondition => {
+  if (!booleanConditionValue) {
+    const [condition] = conditions
+    return condition
+  }
+
+  return {
+    [booleanConditionValue]: conditions,
+  } as BooleanCondition
 }
 
 export const statusCodeOptions = statusCodes

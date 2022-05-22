@@ -1,7 +1,5 @@
 <template>
-  <div>
-    New rule
-  </div>
+  <RuleForm />
 </template>
 
 <script setup lang="ts">

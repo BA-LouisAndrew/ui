@@ -71,7 +71,7 @@ const deleteKeyValuePair = (id: string) => {
   delete keyValuePairs[id]
 }
 
-watch(keyValuePairs, (value) => emit("update:key-value-pairs", value))
+watch(keyValuePairs, (value) => emit("update:key-value-pairs", Object.values(value)))
 </script>
 
 <style scoped></style>

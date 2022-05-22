@@ -8,6 +8,7 @@
     <n-form
       ref="formRef"
       :model="formValues"
+      :rules="formRules"
     >
       <h2>
         {{ CONSTANTS.title }}
@@ -52,6 +53,13 @@
                 />
               </n-form-item>
             </n-space>
+
+            <n-form-item
+              label="Endpoint"
+              path="endpoint"
+            >
+              <n-input v-model:value="formValues.endpoint" />
+            </n-form-item>
 
             <n-form-item
               label="Method"
@@ -110,6 +118,7 @@
       >
         Delete rule
       </n-button>
+      <span v-else />
       <n-button
         type="primary"
         @click="CONSTANTS.action"
@@ -121,19 +130,21 @@
 </template>
 
 <script setup lang="ts">
-import { FormInst } from "naive-ui"
+import { FormInst, FormItemRule } from "naive-ui"
 import { reactive, ref } from "vue"
 
 import KeyValueInput from "@/components/common/KeyValueInput.vue"
-import { ValidationRule } from "@/types"
+import { HTTPMethod, ValidationRule } from "@/types"
 
 import ConditionList from "./ConditionList.vue"
 import RetryStrategy from "./RetryStrategy.vue"
 import {
   genericObjectToKeyValuePairs,
+  getConditionFromProps,
   getConditionsProps,
   getFormValuesFromValidationRule,
   httpMethodOptions,
+  keyValuePairsToGenericObject,
 } from "./utils"
 
 const props = defineProps<{ rule?: ValidationRule }>()
@@ -143,21 +154,46 @@ const formRef = ref<FormInst>()
 const isEditingRule = !!props.rule
 
 const formValues = reactive(getFormValuesFromValidationRule(props.rule))
-const requestUrlParameter = ref(genericObjectToKeyValuePairs(
-  props.rule?.requestUrlParameter || {}
-))
-const requestBody = ref(genericObjectToKeyValuePairs(props.rule?.requestBody || {}))
+const requestUrlParameter = ref(
+  genericObjectToKeyValuePairs(props.rule?.requestUrlParameter || {})
+)
+const requestBody = ref(
+  genericObjectToKeyValuePairs(props.rule?.requestBody || {})
+)
 const condition = reactive(getConditionsProps(props.rule))
 const retryStrategy = ref(props.rule?.retryStrategy || undefined)
 
 const createRule = () => {
-  //
+  // Validation
+  emit("create", getRuleValue())
 }
 const updateRule = () => {
-  emit("update")
+  // Validation
+  emit("update", getRuleValue())
 }
+
 const deleteRule = () => {
-  //
+  // Validation
+  emit("delete")
+}
+
+const getRuleValue = (): ValidationRule => {
+  const { enabled, method, ...rest } = formValues
+
+  return {
+    ...rest,
+    method: method as HTTPMethod,
+    skip: enabled,
+    retryStrategy: retryStrategy.value,
+    condition: getConditionFromProps(
+      condition.conditions || [],
+      condition.booleanConditionValue
+    ),
+    requestBody: keyValuePairsToGenericObject(requestBody.value),
+    requestUrlParameter: keyValuePairsToGenericObject(
+      requestUrlParameter.value
+    ),
+  }
 }
 
 const CONSTANTS = isEditingRule
@@ -171,6 +207,29 @@ const CONSTANTS = isEditingRule
     buttonText: "Create rule",
     action: createRule,
   }
+
+const formRules: { [key: string]: FormItemRule } = {
+  name: {
+    required: true,
+    trigger: "blur",
+    message: "Please add a unique name for this rule",
+  },
+  endpoint: {
+    required: true,
+    trigger: "blur",
+    message: "Please an external endpoint, with whose response the rule should be evaluated",
+  },
+  method: {
+    required: true,
+    trigger: "blur",
+    message: "Please add an HTTP method, which will be used to fire an HTTP request to th external endpoint",
+  },
+  failScore:{
+    required: true,
+    trigger: "blur",
+    message: "Please add score to be added to the fraud score if the rule failed",
+  }
+}
 </script>
 
 <style lang="scss" scoped>
