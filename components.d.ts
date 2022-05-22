@@ -26,9 +26,12 @@ declare module '@vue/runtime-core' {
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
     NSelect: typeof import('naive-ui')['NSelect']
     NSpace: typeof import('naive-ui')['NSpace']
+    NSwitch: typeof import('naive-ui')['NSwitch']
     RetryStrategy: typeof import('./src/components/rule/RetryStrategy.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Rule: typeof import('./src/components/rule.vue')['default']
+    RuleForm: typeof import('./src/components/rule/RuleForm.vue')['default']
     RuleListItem: typeof import('./src/components/rule-list/RuleListItem.vue')['default']
   }
 }

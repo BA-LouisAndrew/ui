@@ -59,18 +59,25 @@
         </n-grid>
       </n-form>
     </n-card>
+    <span
+      v-else
+      class="info"
+    >
+      Adding a retry strategy is optional, but it can be useful to retry the request in case the external endpoint is not accessible.
+    </span>
   </n-space>
 </template>
 
 <script setup lang="ts">
 import { computed } from "@vue/reactivity"
 import { FormInst } from "naive-ui"
-import { reactive, ref } from "vue"
+import { reactive, ref, watch } from "vue"
 
 import { RetryStrategy } from "@/types"
 
 import { statusCodeOptions } from "./utils"
 
+const emit = defineEmits(["update:retry-strategy"])
 const props = defineProps<{ retryStrategy?: RetryStrategy }>()
 
 const retryStrategyExists = ref(!!props.retryStrategy)
@@ -103,6 +110,8 @@ const removeRetryStrategy = () => {
 const addRetryStrategy = () => {
   retryStrategyExists.value = true
 }
+
+watch(formValues, () => emit("update:retry-strategy", formValues))
 </script>
 
 <style scoped></style>

@@ -7,7 +7,7 @@ import RuleList from "./RuleList.vue"
 import Validation from "./Validation.vue"
 import ValidationList from "./ValidationList.vue"
 
-export const routes: RouteRecordRaw[] = [
+const routes: RouteRecordRaw[] = [
   {
     path: "/",
     component: Home,
@@ -34,3 +34,5 @@ export const routes: RouteRecordRaw[] = [
     component: ValidationList,
   },
 ]
+
+export default routes

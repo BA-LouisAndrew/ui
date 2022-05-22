@@ -10,7 +10,13 @@ import { themeOverrides } from "./theme"
 
 <style>
 #app {
-  padding: 32px;
+  padding: 32px 128px;
   font-family: "Roboto Mono", monospace;
+}
+
+.info {
+  color: #5c5c5c;
+  font-style: italic;
+  font-size: 0.8rem;
 }
 </style>

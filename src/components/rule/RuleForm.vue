@@ -1,0 +1,243 @@
+<template>
+  <n-space
+    class="rule-form"
+    justify="space-between"
+    vertical
+    data-testid="rule-form"
+  >
+    <n-form
+      ref="formRef"
+      :model="formValues"
+      :rules="formRules"
+    >
+      <h2>
+        {{ CONSTANTS.title }}
+      </h2>
+      <n-grid
+        :cols="3"
+        :x-gap="120"
+        :y-gap="32"
+      >
+        <n-gi :span="1">
+          <n-space vertical>
+            <n-form-item
+              label="Name"
+              path="name"
+            >
+              <n-input
+                v-model:value="formValues.name"
+                :disabled="isEditingRule"
+                placeholder="Name"
+              />
+            </n-form-item>
+
+            <n-space :size="[32, 0]">
+              <n-form-item
+                label="Enabled"
+                path="enabled"
+              >
+                <n-switch v-model:value="formValues.enabled" />
+              </n-form-item>
+
+              <n-form-item
+                label="Priority"
+                path="priority"
+                :label-width="64"
+              >
+                <n-input-number
+                  v-model:value="formValues.priority"
+                  class="priority-input"
+                  :min="0"
+                  :max="99"
+                  placeholder="Priority"
+                />
+              </n-form-item>
+            </n-space>
+
+            <n-form-item
+              label="Endpoint"
+              path="endpoint"
+            >
+              <n-input v-model:value="formValues.endpoint" />
+            </n-form-item>
+
+            <n-form-item
+              label="Method"
+              path="method"
+            >
+              <n-select
+                v-model:value="formValues.method"
+                :options="httpMethodOptions"
+              />
+            </n-form-item>
+
+            <n-form-item
+              label="Fail score"
+              path="failScore"
+            >
+              <n-input-number
+                v-model:value="formValues.failScore"
+                :min="0"
+                :max="1"
+                :step="0.1"
+                placeholder="Fail score"
+              />
+            </n-form-item>
+
+            <n-form-item label="Request URL parameter">
+              <key-value-input v-model:key-value-pairs="requestUrlParameter" />
+            </n-form-item>
+
+            <n-form-item label="Request body">
+              <key-value-input v-model:key-value-pairs="requestBody" />
+            </n-form-item>
+          </n-space>
+        </n-gi>
+
+        <n-gi :span="2">
+          <n-space
+            :space="[0, 64]"
+            vertical
+          >
+            <condition-list
+              v-model:conditions="condition.conditions"
+              v-model:boolean-condition="condition.booleanConditionValue"
+            />
+
+            <retry-strategy v-model:retry-strategy="retryStrategy" />
+          </n-space>
+        </n-gi>
+      </n-grid>
+    </n-form>
+    <n-space justify="space-between">
+      <n-button
+        v-if="isEditingRule"
+        primary
+        type="error"
+        @click="deleteRule"
+      >
+        Delete rule
+      </n-button>
+      <span v-else />
+      <n-button
+        type="primary"
+        @click="CONSTANTS.action"
+      >
+        {{ CONSTANTS.buttonText }}
+      </n-button>
+    </n-space>
+  </n-space>
+</template>
+
+<script setup lang="ts">
+import { FormInst, FormItemRule } from "naive-ui"
+import { reactive, ref } from "vue"
+
+import KeyValueInput from "@/components/common/KeyValueInput.vue"
+import { HTTPMethod, ValidationRule } from "@/types"
+
+import ConditionList from "./ConditionList.vue"
+import RetryStrategy from "./RetryStrategy.vue"
+import {
+  genericObjectToKeyValuePairs,
+  getConditionFromProps,
+  getConditionsProps,
+  getFormValuesFromValidationRule,
+  httpMethodOptions,
+  keyValuePairsToGenericObject,
+} from "./utils"
+
+const props = defineProps<{ rule?: ValidationRule }>()
+const emit = defineEmits(["create", "update", "delete"])
+
+const formRef = ref<FormInst>()
+const isEditingRule = !!props.rule
+
+const formValues = reactive(getFormValuesFromValidationRule(props.rule))
+const requestUrlParameter = ref(
+  genericObjectToKeyValuePairs(props.rule?.requestUrlParameter || {})
+)
+const requestBody = ref(
+  genericObjectToKeyValuePairs(props.rule?.requestBody || {})
+)
+const condition = reactive(getConditionsProps(props.rule))
+const retryStrategy = ref(props.rule?.retryStrategy || undefined)
+
+const createRule = () => {
+  // Validation
+  emit("create", getRuleValue())
+}
+const updateRule = () => {
+  // Validation
+  emit("update", getRuleValue())
+}
+
+const deleteRule = () => {
+  // Validation
+  emit("delete")
+}
+
+const getRuleValue = (): ValidationRule => {
+  const { enabled, method, ...rest } = formValues
+
+  return {
+    ...rest,
+    method: method as HTTPMethod,
+    skip: enabled,
+    retryStrategy: retryStrategy.value,
+    condition: getConditionFromProps(
+      condition.conditions || [],
+      condition.booleanConditionValue
+    ),
+    requestBody: keyValuePairsToGenericObject(requestBody.value),
+    requestUrlParameter: keyValuePairsToGenericObject(
+      requestUrlParameter.value
+    ),
+  }
+}
+
+const CONSTANTS = isEditingRule
+  ? {
+    title: `Editing ${props.rule.name}`,
+    buttonText: "Save changes",
+    action: updateRule,
+  }
+  : {
+    title: "Create a new rule",
+    buttonText: "Create rule",
+    action: createRule,
+  }
+
+const formRules: { [key: string]: FormItemRule } = {
+  name: {
+    required: true,
+    trigger: "blur",
+    message: "Please add a unique name for this rule",
+  },
+  endpoint: {
+    required: true,
+    trigger: "blur",
+    message: "Please an external endpoint, with whose response the rule should be evaluated",
+  },
+  method: {
+    required: true,
+    trigger: "blur",
+    message: "Please add an HTTP method, which will be used to fire an HTTP request to th external endpoint",
+  },
+  failScore:{
+    required: true,
+    trigger: "blur",
+    message: "Please add score to be added to the fraud score if the rule failed",
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.rule-form {
+  min-height: calc(100vh - 64px);
+}
+
+.priority-input {
+  width: 86px;
+}
+</style>

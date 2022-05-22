@@ -1,6 +1,9 @@
 <template>
   <n-space vertical>
-    <n-space justify="space-between">
+    <n-space
+      justify="space-between"
+      align="center"
+    >
       <h3>Conditions</h3>
       <n-button
         secondary
@@ -29,11 +32,18 @@
     </n-space>
 
     <n-space vertical>
+      <span
+        v-if="!conditions.length"
+        class="info"
+      >
+        Please at least one condition, by which the rule should be evaluated!
+      </span>
       <condition-card
-        v-for="conditionId in conditionIds"
-        :key="conditionId"
-        :default-values="getDefaultCondition(conditionId)"
-        @delete="deleteCondition(conditionId)"
+        v-for="condition in conditions"
+        :key="condition.id"
+        v-model:value="condition.condition"
+        :condition-id="condition.id"
+        @delete="deleteCondition(condition.id)"
       />
     </n-space>
   </n-space>
@@ -41,24 +51,32 @@
 
 <script setup lang="ts">
 import { computed } from "@vue/reactivity"
-import { ref } from "vue"
+import { ref, watch } from "vue"
 
 import { Condition } from "@/types"
 import { createUuid } from "@/utils"
 
 import ConditionCard from "./ConditionCard.vue"
 
-const props = defineProps<{ conditions?: Condition[] }>()
-const defaultConditions = (props.conditions || []).map((condition) => ({
-  ...condition,
-  id: createUuid(),
-}))
+const emit = defineEmits(["update:conditions", "update:boolean-condition"])
+const props = defineProps<{
+  conditions?: Condition[];
+  booleanCondition?: "any" | "all";
+}>()
 
-const conditionIds = ref<string[]>(defaultConditions.map(({ id }) => id))
-const booleanCondition = ref<"any" | "all" | null>(null)
+const conditions = ref<{ condition?: Condition; id: string }[]>(
+  (props.conditions || []).map((condition) => ({
+    condition,
+    id: createUuid(),
+  }))
+)
+
+const booleanCondition = ref<"any" | "all" | null>(
+  props.booleanCondition || null
+)
 
 const displayBooleanConditionInput = computed(
-  () => conditionIds.value.length > 1
+  () => conditions.value.length > 1
 )
 
 const booleanConditionOptions = [
@@ -69,14 +87,22 @@ const booleanConditionOptions = [
   { value: "all", label: "ALL" },
 ]
 
-const addNewCondition = () =>
-  (conditionIds.value = [...conditionIds.value, createUuid()])
+const addNewCondition = () => {
+  conditions.value = [
+    ...conditions.value,
+    { id: createUuid(), condition: undefined },
+  ]
+}
 
-const deleteCondition = (conditionId: string) =>
-  (conditionIds.value = conditionIds.value.filter((id) => id !== conditionId))
+const deleteCondition = (conditionId: string) => {
+  conditions.value = conditions.value.filter(({ id }) => id !== conditionId)
+}
 
-const getDefaultCondition = (conditionId: string) =>
-  defaultConditions.find(({ id }) => id === conditionId)
+watch(conditions, () => emit("update:conditions", conditions.value))
+
+watch(booleanCondition, () =>
+  emit("update:boolean-condition", booleanCondition)
+)
 </script>
 
 <style scoped></style>
