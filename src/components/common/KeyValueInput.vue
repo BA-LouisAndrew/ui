@@ -48,7 +48,7 @@ import { computed, reactive, watch } from "vue"
 import { KeyValuePair } from "@/types"
 import { createUuid } from "@/utils"
 
-const emit = defineEmits(["input"])
+const emit = defineEmits(["update:key-value-pairs"])
 const props = defineProps<{ keyValuePairs?: KeyValuePair[] }>()
 
 const keyValuePairs = reactive<{ [id: string]: KeyValuePair }>(
@@ -71,7 +71,7 @@ const deleteKeyValuePair = (id: string) => {
   delete keyValuePairs[id]
 }
 
-watch(keyValuePairs, (value) => emit("input", value))
+watch(keyValuePairs, (value) => emit("update:key-value-pairs", value))
 </script>
 
 <style scoped></style>

@@ -77,11 +77,11 @@
             </n-form-item>
 
             <n-form-item label="Request URL parameter">
-              <key-value-input :key-value-pairs="requestUrlParameter" />
+              <key-value-input v-model:key-value-pairs="requestUrlParameter" />
             </n-form-item>
 
             <n-form-item label="Request body">
-              <key-value-input :key-value-pairs="requestBody" />
+              <key-value-input v-model:key-value-pairs="requestBody" />
             </n-form-item>
           </n-space>
         </n-gi>
@@ -140,13 +140,13 @@ const props = defineProps<{ rule?: ValidationRule }>()
 const emit = defineEmits(["create", "update", "delete"])
 
 const formRef = ref<FormInst>()
+const isEditingRule = !!props.rule
 
 const formValues = reactive(getFormValuesFromValidationRule(props.rule))
-const isEditingRule = !!props.rule
-const requestUrlParameter = genericObjectToKeyValuePairs(
+const requestUrlParameter = ref(genericObjectToKeyValuePairs(
   props.rule?.requestUrlParameter || {}
-)
-const requestBody = genericObjectToKeyValuePairs(props.rule?.requestBody || {})
+))
+const requestBody = ref(genericObjectToKeyValuePairs(props.rule?.requestBody || {}))
 const condition = reactive(getConditionsProps(props.rule))
 const retryStrategy = ref(props.rule?.retryStrategy || undefined)
 
