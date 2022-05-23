@@ -45,17 +45,14 @@
 import { TrashSharp } from "@vicons/ionicons5"
 import { computed, reactive, watch } from "vue"
 
-import { KeyValuePair } from "@/types"
-import { createUuid } from "@/utils"
+import { KeyValuePair, MappedObject } from "@/types"
+import { createMappedObject,createUuid } from "@/utils"
 
 const emit = defineEmits(["update:key-value-pairs"])
 const props = defineProps<{ keyValuePairs?: KeyValuePair[] }>()
 
-const keyValuePairs = reactive<{ [id: string]: KeyValuePair }>(
-  (props.keyValuePairs || []).reduce(
-    (a, b) => ({ ...a, [createUuid()]: b }),
-    {}
-  )
+const keyValuePairs = reactive<MappedObject<KeyValuePair>>(
+  createMappedObject(props.keyValuePairs || [])
 )
 
 const keyValuePairIds = computed(() => Object.keys(keyValuePairs))
