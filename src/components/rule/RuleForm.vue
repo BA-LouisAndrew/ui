@@ -5,20 +5,20 @@
     vertical
     data-testid="rule-form"
   >
-    <n-form
-      ref="formRef"
-      :model="formValues"
-      :rules="formRules"
+    <h2>
+      {{ CONSTANTS.title }}
+    </h2>
+    <n-grid
+      :cols="3"
+      :x-gap="120"
+      :y-gap="32"
     >
-      <h2>
-        {{ CONSTANTS.title }}
-      </h2>
-      <n-grid
-        :cols="3"
-        :x-gap="120"
-        :y-gap="32"
-      >
-        <n-gi :span="1">
+      <n-gi :span="1">
+        <n-form
+          ref="formRef"
+          :model="formValues"
+          :rules="formRules"
+        >
           <n-space vertical>
             <n-form-item
               label="Name"
@@ -92,23 +92,23 @@
               <key-value-input v-model:key-value-pairs="requestBody" />
             </n-form-item>
           </n-space>
-        </n-gi>
+        </n-form>
+      </n-gi>
 
-        <n-gi :span="2">
-          <n-space
-            :space="[0, 64]"
-            vertical
-          >
-            <condition-list
-              v-model:conditions="condition.conditions"
-              v-model:boolean-condition="condition.booleanConditionValue"
-            />
+      <n-gi :span="2">
+        <n-space
+          :space="[0, 64]"
+          vertical
+        >
+          <condition-list
+            v-model:conditions="condition.conditions"
+            v-model:boolean-condition="condition.booleanConditionValue"
+          />
 
-            <retry-strategy v-model:retry-strategy="retryStrategy" />
-          </n-space>
-        </n-gi>
-      </n-grid>
-    </n-form>
+          <retry-strategy v-model:retry-strategy="retryStrategy" />
+        </n-space>
+      </n-gi>
+    </n-grid>
     <n-space justify="space-between">
       <n-button
         v-if="isEditingRule"
@@ -183,7 +183,7 @@ const getRuleValue = (): ValidationRule => {
   return {
     ...rest,
     method: method as HTTPMethod,
-    skip: enabled,
+    skip: !enabled,
     retryStrategy: retryStrategy.value,
     condition: getConditionFromProps(
       condition.conditions || [],
@@ -217,18 +217,21 @@ const formRules: { [key: string]: FormItemRule } = {
   endpoint: {
     required: true,
     trigger: "blur",
-    message: "Please an external endpoint, with whose response the rule should be evaluated",
+    message:
+      "Please an external endpoint, with whose response the rule should be evaluated",
   },
   method: {
     required: true,
     trigger: "blur",
-    message: "Please add an HTTP method, which will be used to fire an HTTP request to th external endpoint",
+    message:
+      "Please add an HTTP method, which will be used to fire an HTTP request to th external endpoint",
   },
-  failScore:{
+  failScore: {
     required: true,
     trigger: "blur",
-    message: "Please add score to be added to the fraud score if the rule failed",
-  }
+    message:
+      "Please add score to be added to the fraud score if the rule failed",
+  },
 }
 </script>
 

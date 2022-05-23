@@ -59,6 +59,18 @@
             />
           </n-form-item>
         </n-gi>
+        
+        <n-gi :span="2">
+          <n-form-item
+            label="Fail message"
+            path="failMessage"
+          >
+            <n-input
+              v-model:value="formValues.failMessage"
+              placeholder="Fail message"
+            />
+          </n-form-item>
+        </n-gi>
       </n-grid>
       <n-space justify="end">
         <n-button
@@ -98,6 +110,7 @@ const formValues = reactive({
   type: props.value?.type || null,
   operator: props.value?.operator || null,
   value: props.value ? `${props.value.value}` : "",
+  failMessage: props.value?.failMessage || ""
 })
 
 const valueFormRule = computed<FormItemRule[]>(() => [
@@ -175,6 +188,11 @@ const formRules: { [key: string]: FormItemRule } = {
     required: true,
     trigger: "blur",
     message: "Please add an operator to evaluate the attribute",
+  },
+  failMessage: {
+    required: true,
+    trigger: "blur",
+    message: "Please add a message to be displayed if the rule check failed",
   },
 }
 </script>

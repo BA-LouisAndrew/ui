@@ -33,28 +33,27 @@
 
     <n-space vertical>
       <span
-        v-if="!conditions.length"
+        v-if="!conditionIds.length"
         class="info"
       >
         Please at least one condition, by which the rule should be evaluated!
       </span>
       <condition-card
-        v-for="condition in conditions"
-        :key="condition.id"
-        v-model:value="condition.condition"
-        :condition-id="condition.id"
-        @delete="deleteCondition(condition.id)"
+        v-for="id in conditionIds"
+        :key="id"
+        v-model:value="conditions[id]"
+        :condition-id="id"
+        @delete="deleteCondition(id)"
       />
     </n-space>
   </n-space>
 </template>
 
 <script setup lang="ts">
-import { computed } from "@vue/reactivity"
-import { ref, watch } from "vue"
+import { computed, reactive, ref, watch } from "vue"
 
-import { Condition } from "@/types"
-import { createUuid } from "@/utils"
+import { Condition, MappedObject } from "@/types"
+import { createMappedObject, createUuid } from "@/utils"
 
 import ConditionCard from "./ConditionCard.vue"
 
@@ -64,19 +63,18 @@ const props = defineProps<{
   booleanCondition?: "any" | "all";
 }>()
 
-const conditions = ref<{ condition?: Condition; id: string }[]>(
-  (props.conditions || []).map((condition) => ({
-    condition,
-    id: createUuid(),
-  }))
+const conditions = reactive<MappedObject<Condition>>(
+  createMappedObject(props.conditions || [])
 )
 
 const booleanCondition = ref<"any" | "all" | null>(
   props.booleanCondition || null
 )
 
+const conditionIds = computed(() => Object.keys(conditions))
+
 const displayBooleanConditionInput = computed(
-  () => conditions.value.length > 1
+  () => conditionIds.value.length > 1
 )
 
 const booleanConditionOptions = [
@@ -88,21 +86,34 @@ const booleanConditionOptions = [
 ]
 
 const addNewCondition = () => {
-  conditions.value = [
-    ...conditions.value,
-    { id: createUuid(), condition: undefined },
-  ]
+  conditions[createUuid()] = {
+    path: "",
+    type: null,
+    operator: null,
+    value: "",
+  } as any as Condition
 }
 
 const deleteCondition = (conditionId: string) => {
-  conditions.value = conditions.value.filter(({ id }) => id !== conditionId)
+  delete conditions[conditionId]
 }
 
-watch(conditions, () => emit("update:conditions", conditions.value))
+watch(conditions, () =>
+  emit(
+    "update:conditions",
+    Object.values(conditions)
+  )
+)
 
 watch(booleanCondition, () =>
   emit("update:boolean-condition", booleanCondition)
 )
+
+watch(displayBooleanConditionInput, (value, oldValue) => {
+  if (value && !oldValue) {
+    booleanCondition.value = null
+  }
+})
 </script>
 
 <style scoped></style>

@@ -4,22 +4,79 @@
     Error!
   </div>
   <div v-else>
-    <RuleForm :rule="validationRule!" />
-  </div> 
+    <n-spin
+      :show="isActionLoading"
+      size="large"
+      stroke="#000"
+    >
+      <RuleForm
+        :rule="validationRule!"
+        @update="updateRule"
+        @delete="deleteRule"
+      />
+      <template #description>
+        <h3 style="color: black">
+          {{ actionDescription }}
+        </h3>
+      </template>
+    </n-spin>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { AxiosError } from "axios"
+import { useNotification } from "naive-ui"
 import { onBeforeMount, ref } from "vue"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 
 import RuleForm from "@/components/rule/RuleForm.vue"
 import { useFetch } from "@/composable/useFetch"
-import { ValidationRule } from "@/types"
+import { BackendError, ValidationRule } from "@/types"
 
 const { params } = useRoute()
-const { get: getValidationRule, hasError, isLoading } = useFetch<ValidationRule>("/rules/" + params.ruleName)
+const { push } = useRouter()
+const { error } = useNotification()
+const {
+  get: getValidationRule,
+  hasError,
+  isLoading,
+  put: putUpdateRule,
+} = useFetch<ValidationRule>("/rules/" + params.ruleName)
 
 const validationRule = ref<ValidationRule | null>()
+const isActionLoading = ref(false)
+const actionDescription = ref("")
+
+const updateRule = async (rule: ValidationRule) => {
+  isActionLoading.value = true
+  actionDescription.value = "Updating rule"
+  try {
+    const { name: _, ...rest } = rule
+    const { data } = await putUpdateRule<Omit<ValidationRule, "name">>(rest)
+    if (data) {
+      push(`/rules?updateSuccess=${rule.name}`)
+    }
+  } catch (e) {
+    // TODO: creare `useErrorHandler`
+    handleError(e)
+  } finally {
+    isActionLoading.value = false
+    actionDescription.value = ""
+  }
+}
+
+const deleteRule = async () => {
+  //
+}
+
+const handleError = (e: unknown) => {
+  const err = e as AxiosError<BackendError>
+  const response = err.response?.data
+  error({
+    title: response?.message || "Something went wrong",
+    content: response?.details || "",
+  })
+}
 
 onBeforeMount(async () => {
   isLoading.value = true
@@ -34,6 +91,4 @@ onBeforeMount(async () => {
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
