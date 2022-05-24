@@ -123,11 +123,12 @@ const valueFormRule = computed<FormItemRule[]>(() => [
   {
     validator: (_, value) => {
       if (formValues.type === "number") {
-        return !isNaN(parseInt(value, 10))
+        return !isNaN(parseFloat(value))
       }
       return true
     },
     message: "Please input a valid number",
+    trigger: "blur"
   },
 ])
 

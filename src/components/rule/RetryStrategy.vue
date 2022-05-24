@@ -117,6 +117,12 @@ const addRetryStrategy = () => {
 
 watch(formValues, () => emit("update:retry-strategy", formValues))
 
+watch(retryStrategyExists, (value) => {
+  if (!value) {
+    emit("update:retry-strategy", null)
+  }
+})
+
 onMounted(() => {
   eventBus.on(Events.VALIDATE_RETRY_STRATEGY, () => {
     formRef.value?.validate()
