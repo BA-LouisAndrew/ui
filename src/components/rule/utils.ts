@@ -180,8 +180,8 @@ export const validateCondition = (
 export const validateRetryStrategy = (
   retryStrategy: RetryStrategy | null | undefined
 ) => {
-  eventBus.emit(Events.VALIDATE_RETRY_STRATEGY)
   if (retryStrategy) {
+    eventBus.emit(Events.VALIDATE_RETRY_STRATEGY)
     return !!retryStrategy.limit
   }
 
@@ -193,7 +193,11 @@ export const getConditionFromProps = (
   booleanConditionValue: string | undefined | null
 ): Condition | BooleanCondition => {
   if (!booleanConditionValue) {
-    return conditions as unknown as Condition
+    if (conditions.length === 1) {
+      return conditions[0]
+    }
+
+    return conditions as unknown as Condition // Error will be thrown during validation
   }
 
   return {
