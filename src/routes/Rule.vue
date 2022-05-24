@@ -57,7 +57,7 @@ const updateRule = async (rule: ValidationRule) => {
       push(`/rules?updateSuccess=${rule.name}`)
     }
   } catch (e) {
-    // TODO: creare `useErrorHandler`
+    // TODO: create `useErrorHandler`
     handleError(e)
   } finally {
     isActionLoading.value = false

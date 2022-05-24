@@ -35,15 +35,6 @@ describe("Rule form component", () => {
       const { getByRole } = renderComponent()
       expect(getByRole("button", { name: "Save changes" }))
     })
-
-    it("emits the correct event", async () => {
-      const { getByRole, getByPlaceholderText, emitted } = renderComponent()
-
-      await fireEvent.update(getByPlaceholderText("Fail score"), "0.2")
-      await fireEvent.click(getByRole("button", { name: "Save changes" }))      
-
-      expect(emitted()["update"]).toBeTruthy()
-    })
   })
   
   describe("create new rule", () => {
@@ -63,11 +54,6 @@ describe("Rule form component", () => {
       const { getByRole } = renderComponent({ props: {} })
 
       expect(getByRole("button", { name: "Create rule" })).toBeTruthy()
-    })
-
-    // TODO
-    it.skip("emits the correct event", async () => {
-      const { getByPlaceholderText, getByRole } = renderComponent({ props: {} })
     })
   })
 })

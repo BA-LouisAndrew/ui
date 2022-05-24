@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts", "tests/**/*.spec.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts", "tests/**/*.spec.ts", "tests/components/NotificationWrapper.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

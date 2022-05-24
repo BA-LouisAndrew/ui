@@ -1,11 +1,13 @@
-import { fireEvent, getByTestId, render, RenderOptions } from "@testing-library/vue"
+import { fireEvent, render, RenderOptions } from "@testing-library/vue"
 
 import ConditionList from "@/components/rule/ConditionList.vue"
 import { conditions } from "@/seed"
 
 describe("Condition list", () => {
   const renderComponent = (options: RenderOptions = {}) =>
-    render(ConditionList, options)
+    render(ConditionList, {
+      ...options
+    })
 
   it("renders a condition card if the `Add condition` button is clicked", async () => {
     const { getByRole, queryAllByTestId } = renderComponent()

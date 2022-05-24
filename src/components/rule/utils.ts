@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { eventBus, Events } from "@/event-bus"
+import { retryStrategy } from "@/seed"
 import { statusCodes } from "@/statusCodes"
 import {
   BooleanCondition,
@@ -7,6 +9,7 @@ import {
   GenericObject,
   HTTPMethod,
   KeyValuePair,
+  RetryStrategy,
   ValidationRule,
 } from "@/types"
 
@@ -133,6 +136,45 @@ export const getConditionsProps = (
     conditions: [condition as Condition],
     booleanConditionValue: undefined,
   }
+}
+
+const validateConditionProperties = (condition: any) => {
+  const props = ["path", "type", "operator", "failMessage"]
+  return props.every((key) => condition[key] !== undefined)
+}
+
+export const validateCondition = (
+  condition: Condition | BooleanCondition | null | undefined
+) => {
+  if (!condition) {
+    eventBus.emit(Events.NO_CONDITION_DETECTED)
+    return false
+  }
+
+  eventBus.emit(Events.VALIDATE_CONDITION)
+  const conditionKeys = Object.keys(condition)
+  if (conditionKeys.includes("any")) {
+    const conditions = (condition as BooleanCondition).any
+    return conditions?.every(validateConditionProperties)
+  }
+
+  if (conditionKeys.includes("all")) {
+    const conditions = (condition as BooleanCondition).all
+    return conditions?.every(validateConditionProperties)
+  }
+
+  return validateConditionProperties(condition)
+}
+
+export const validateRetryStrategy = (
+  retryStrategy: RetryStrategy | null | undefined
+) => {
+  eventBus.emit(Events.VALIDATE_RETRY_STRATEGY)
+  if (retryStrategy) {
+    return !!retryStrategy.limit
+  }
+
+  return true
 }
 
 export const getConditionFromProps = (
