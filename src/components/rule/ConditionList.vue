@@ -126,6 +126,13 @@ onMounted(() => {
       content: "Please add at least one condition!"
     })
   })
+  
+  eventBus.on(Events.NO_BOOLEAN_CONDITION, () => {
+    notification?.error({
+      title: "Please add a boolean condition",
+      content: "Please choose either 'ANY' or 'ALL'"
+    })
+  })
 })
 
 onBeforeUnmount(() => {

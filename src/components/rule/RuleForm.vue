@@ -227,7 +227,7 @@ const getRuleValue = (): ValidationRule => {
     ...rest,
     method: method as HTTPMethod,
     skip: !enabled,
-    retryStrategy: retryStrategy.value,
+
     condition: getConditionFromProps(
       condition.conditions || [],
       condition.booleanConditionValue
@@ -236,6 +236,7 @@ const getRuleValue = (): ValidationRule => {
     requestUrlParameter: keyValuePairsToGenericObject(
       requestUrlParameter.value
     ),
+    retryStrategy: retryStrategy.value 
   }
 }
 
