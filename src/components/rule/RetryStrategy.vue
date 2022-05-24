@@ -89,7 +89,7 @@ const formRef = ref<FormInst>()
 
 const formValues = reactive({
   limit: props.retryStrategy?.limit || 1,
-  statusCodes: props.retryStrategy?.statusCodes || null,
+  statusCodes: props.retryStrategy?.statusCodes || [],
 })
 
 const buttonProps = computed<{ text: string; type: "error" | "primary" }>(() =>
@@ -107,7 +107,7 @@ const handleButtonClick = computed(() =>
 
 const removeRetryStrategy = () => {
   formValues.limit = 1
-  formValues.statusCodes = null
+  formValues.statusCodes = []
   retryStrategyExists.value = false
 }
 
@@ -120,6 +120,8 @@ watch(formValues, () => emit("update:retry-strategy", formValues))
 watch(retryStrategyExists, (value) => {
   if (!value) {
     emit("update:retry-strategy", null)
+  } else {
+    emit("update:retry-strategy", formValues)
   }
 })
 
