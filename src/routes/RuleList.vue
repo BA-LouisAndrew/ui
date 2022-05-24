@@ -23,7 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue"
+import { useNotification } from "naive-ui"
+import { onBeforeMount, provide, ref } from "vue"
+import { useRoute } from "vue-router"
 
 import RuleListItem from "@/components/rule-list/RuleListItem.vue"
 import { useFetch } from "@/composable/useFetch"
@@ -31,11 +33,16 @@ import { ValidationRule } from "@/types"
 
 const rulesList = ref<ValidationRule[]>([])
 
+const { params } = useRoute()
 const {
   get: getRulesList,
   hasError,
   isLoading,
 } = useFetch<ValidationRule[]>("/rules")
+const notification = useNotification()
+const { success, info }  = notification
+
+provide("notification", notification)
 
 onBeforeMount(async () => {
   isLoading.value = true
@@ -46,6 +53,29 @@ onBeforeMount(async () => {
     hasError.value = true
   } finally {
     isLoading.value = false
+  }
+
+  const { updateSuccess, createSuccess, deleteSuccess } = params
+
+  if (updateSuccess) {
+    success({
+      title: "Rule updated",
+      content: `Rule '${updateSuccess}' updated successfully`
+    })
+  }
+
+  if (createSuccess) {
+    success({
+      title: "Rule created",
+      content: `Rule '${createSuccess}' created successfully`
+    })
+  }
+  
+  if (deleteSuccess) {
+    info({
+      title: "Rule deleted",
+      content: `Rule '${deleteSuccess}' deleted successfully`
+    })
   }
 })
 </script>

@@ -24,6 +24,7 @@
       <n-form
         ref="formRef"
         :model="formValues"
+        :rules="formRules"
       >
         <n-grid
           x-gap="12"
@@ -38,6 +39,7 @@
                 v-model:value="formValues.limit"
                 :min="1"
                 :max="3"
+                :default-value="1"
                 placeholder="Limit"
               />
             </n-form-item>
@@ -63,16 +65,18 @@
       v-else
       class="info"
     >
-      Adding a retry strategy is optional, but it can be useful to retry the request in case the external endpoint is not accessible.
+      Adding a retry strategy is optional, but it can be useful to retry the
+      request in case the external endpoint is not accessible.
     </span>
   </n-space>
 </template>
 
 <script setup lang="ts">
 import { computed } from "@vue/reactivity"
-import { FormInst } from "naive-ui"
-import { reactive, ref, watch } from "vue"
+import { FormInst, FormItemRule } from "naive-ui"
+import { onBeforeUnmount, onMounted, reactive, ref, watch } from "vue"
 
+import { eventBus, Events } from "@/event-bus"
 import { RetryStrategy } from "@/types"
 
 import { statusCodeOptions } from "./utils"
@@ -112,6 +116,25 @@ const addRetryStrategy = () => {
 }
 
 watch(formValues, () => emit("update:retry-strategy", formValues))
+
+onMounted(() => {
+  eventBus.on(Events.VALIDATE_RETRY_STRATEGY, () => {
+    formRef.value?.validate()
+  })
+})
+
+onBeforeUnmount(() => {
+  eventBus.off(Events.VALIDATE_RETRY_STRATEGY)
+})
+
+const formRules: { [key: string]: FormItemRule } = {
+  limit: {
+    required: true,
+    trigger: "blur",
+    message: "Please add limit of retries for the retry strategy",
+    type: "number",
+  },
+}
 </script>
 
 <style scoped></style>

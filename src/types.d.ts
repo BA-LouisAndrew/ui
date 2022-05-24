@@ -18,13 +18,10 @@ export type Condition = {
   failMessage: string;
 };
 
-export type BooleanCondition =
-  | {
-      all: Condition[];
-    }
-  | {
-      any: Condition[];
-    };
+export type BooleanCondition = {
+  any?: Condition[]
+  all?: Condition[]
+}
 
 export type RetryStrategy = {
   limit: 1 | 2 | 3;

@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { useNotification } from "naive-ui"
+import { provide } from "vue"
+
 import { themeOverrides } from "./theme"
+
 </script>
 
 <template>

@@ -50,8 +50,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from "vue"
+import { NotificationApiInjection } from "naive-ui/es/notification/src/NotificationProvider"
+import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue"
 
+import { eventBus, Events } from "@/event-bus"
 import { Condition, MappedObject } from "@/types"
 import { createMappedObject, createUuid } from "@/utils"
 
@@ -62,6 +64,8 @@ const props = defineProps<{
   conditions?: Condition[];
   booleanCondition?: "any" | "all";
 }>()
+
+const notification = inject<NotificationApiInjection>("notification") 
 
 const conditions = reactive<MappedObject<Condition>>(
   createMappedObject(props.conditions || [])
@@ -113,6 +117,19 @@ watch(displayBooleanConditionInput, (value, oldValue) => {
   if (value && !oldValue) {
     booleanCondition.value = null
   }
+})
+
+onMounted(() => {
+  eventBus.on(Events.NO_CONDITION_DETECTED, () => {
+    notification?.error({
+      title: "No condition added",
+      content: "Please add at least one condition!"
+    })
+  })
+})
+
+onBeforeUnmount(() => {
+  eventBus.off(Events.NO_CONDITION_DETECTED)
 })
 </script>
 

@@ -18,7 +18,7 @@ describe("Rule form component", () => {
   describe("edit rule", () => {
     it("renders the text `Editing <rule name>` if edit mode is on", () => {
       const { getByText } = renderComponent()
-      expect(getByText("Editing " + rule.name)).toBeTruthy()
+      expect(getByText("Editing '" + rule.name  + "'")).toBeTruthy()
     })
     
     it("disables editing on the `name` field", () => {
@@ -34,15 +34,6 @@ describe("Rule form component", () => {
     it("displays the `Save changes` button", () => {
       const { getByRole } = renderComponent()
       expect(getByRole("button", { name: "Save changes" }))
-    })
-
-    it("emits the correct event", async () => {
-      const { getByRole, getByPlaceholderText, emitted } = renderComponent()
-
-      await fireEvent.update(getByPlaceholderText("Fail score"), "0.2")
-      await fireEvent.click(getByRole("button", { name: "Save changes" }))      
-
-      expect(emitted()["update"]).toBeTruthy()
     })
   })
   
@@ -63,11 +54,6 @@ describe("Rule form component", () => {
       const { getByRole } = renderComponent({ props: {} })
 
       expect(getByRole("button", { name: "Create rule" })).toBeTruthy()
-    })
-
-    // TODO
-    it.skip("emits the correct event", async () => {
-      const { getByPlaceholderText, getByRole } = renderComponent({ props: {} })
     })
   })
 })

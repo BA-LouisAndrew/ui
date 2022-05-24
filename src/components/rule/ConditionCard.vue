@@ -88,8 +88,9 @@
 
 <script setup lang="ts">
 import { FormInst, FormItemInst, FormItemRule } from "naive-ui"
-import { computed, reactive, ref, watch } from "vue"
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue"
 
+import { eventBus, Events } from "@/event-bus"
 import { Condition, ConditionType } from "@/types"
 
 import { getAvailableOperators } from "./utils"
@@ -153,6 +154,16 @@ watch(
 )
 
 watch(formValues, (value) => emit("update:value", value))
+
+onMounted(() => {
+  eventBus.on(Events.VALIDATE_CONDITION, () => {
+    formRef.value?.validate()
+  })
+})
+
+onBeforeUnmount(() => {
+  eventBus.off(Events.VALIDATE_CONDITION)
+})
 
 const typeSelectOptions = [
   {
