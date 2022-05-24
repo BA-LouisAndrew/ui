@@ -41,6 +41,7 @@ const {
   hasError,
   isLoading,
   put: putUpdateRule,
+  delete: deleteRuleMutation
 } = useFetch<ValidationRule>("/rules/" + params.ruleName)
 
 const validationRule = ref<ValidationRule | null>()
@@ -66,7 +67,18 @@ const updateRule = async (rule: ValidationRule) => {
 }
 
 const deleteRule = async () => {
-  //
+  isActionLoading.value = true
+  actionDescription.value = "Deleting rule"
+  try {
+    await deleteRuleMutation()
+    push(`/rules?deleteSuccess=${validationRule.value?.name}`)
+  } catch (e) {
+    // TODO: create `useErrorHandler`
+    handleError(e)
+  } finally {
+    isActionLoading.value = false
+    actionDescription.value = ""
+  }
 }
 
 const handleError = (e: unknown) => {

@@ -18,7 +18,7 @@ describe("Rule form component", () => {
   describe("edit rule", () => {
     it("renders the text `Editing <rule name>` if edit mode is on", () => {
       const { getByText } = renderComponent()
-      expect(getByText("Editing " + rule.name)).toBeTruthy()
+      expect(getByText("Editing '" + rule.name  + "'")).toBeTruthy()
     })
     
     it("disables editing on the `name` field", () => {

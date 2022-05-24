@@ -86,7 +86,9 @@
               </n-form-item>
 
               <n-form-item label="Request URL parameter">
-                <key-value-input v-model:key-value-pairs="requestUrlParameter" />
+                <key-value-input
+                  v-model:key-value-pairs="requestUrlParameter"
+                />
               </n-form-item>
 
               <n-form-item label="Request body">
@@ -111,16 +113,31 @@
         </n-gi>
       </n-grid>
     </n-space>
-    
+
     <n-space justify="space-between">
-      <n-button
+      <n-popconfirm
         v-if="isEditingRule"
-        primary
-        type="error"
-        @click="deleteRule"
+        :positive-button-props="{ type: 'error' }"
+        positive-text="Yes"
+        negative-text="No"
+        @positive-click="deleteRule"
       >
-        Delete rule
-      </n-button>
+        <template #icon>
+          <n-icon color="red">
+            <alert-circle />
+          </n-icon>
+        </template>
+        <template #trigger>
+          <n-button
+            primary
+            type="error"
+          >
+            Delete rule
+          </n-button>
+        </template>
+        Are you sure you want to delete this rule?
+      </n-popconfirm>
+
       <span v-else />
       <n-button
         type="primary"
@@ -133,6 +150,7 @@
 </template>
 
 <script setup lang="ts">
+import { AlertCircle } from "@vicons/ionicons5"
 import { FormInst, FormItemRule } from "naive-ui"
 import { reactive, ref } from "vue"
 
@@ -223,7 +241,7 @@ const getRuleValue = (): ValidationRule => {
 
 const CONSTANTS = isEditingRule
   ? {
-    title: `Editing ${props.rule.name}`,
+    title: `Editing '${props.rule.name}'`,
     buttonText: "Save changes",
     action: updateRule,
   }
