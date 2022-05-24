@@ -213,6 +213,7 @@ const isFormValid = async (value: ValidationRule) =>
       if (!errors) {
         const isConditionValid = validateCondition(value.condition)
         const isRetryStrategyValid = validateRetryStrategy(value.retryStrategy)
+        console.log({ isConditionValid, isRetryStrategyValid })	
         return resolve(isConditionValid && isRetryStrategyValid)
       }
 

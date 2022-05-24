@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { AxiosError } from "axios"
 import { useNotification } from "naive-ui"
-import { onBeforeMount, ref } from "vue"
+import { onBeforeMount, provide, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 import RuleForm from "@/components/rule/RuleForm.vue"
@@ -35,7 +35,7 @@ import { BackendError, ValidationRule } from "@/types"
 
 const { params } = useRoute()
 const { push } = useRouter()
-const { error } = useNotification()
+const notification = useNotification()
 const {
   get: getValidationRule,
   hasError,
@@ -43,6 +43,9 @@ const {
   put: putUpdateRule,
   delete: deleteRuleMutation
 } = useFetch<ValidationRule>("/rules/" + params.ruleName)
+
+provide("notification", notification)
+const { error } = notification
 
 const validationRule = ref<ValidationRule | null>()
 const isActionLoading = ref(false)

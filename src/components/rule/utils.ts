@@ -140,7 +140,7 @@ export const getConditionsProps = (
 
 const validateConditionProperties = (condition: any) => {
   const props = ["path", "type", "operator", "failMessage"]
-  const isPropsValid =  props.every((key) => condition[key] !== undefined)
+  const isPropsValid = props.every((key) => condition[key] !== undefined)
 
   if (condition.type === "number") {
     return isPropsValid && !isNaN(parseFloat(condition.value))
@@ -152,7 +152,7 @@ const validateConditionProperties = (condition: any) => {
 export const validateCondition = (
   condition: Condition | BooleanCondition | null | undefined
 ) => {
-  if (!condition) {
+  if (!condition || (Array.isArray(condition) && condition.length === 0)) {
     eventBus.emit(Events.NO_CONDITION_DETECTED)
     return false
   }
@@ -168,7 +168,7 @@ export const validateCondition = (
     const conditions = (condition as BooleanCondition).all
     return conditions?.every(validateConditionProperties)
   }
-  
+
   if (Array.isArray(condition)) {
     eventBus.emit(Events.NO_BOOLEAN_CONDITION)
     return false
