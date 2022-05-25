@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useNotification } from "naive-ui"
-import { provide } from "vue"
-
+import Header from "./components/common/Header.vue"
 import { themeOverrides } from "./theme"
-
 </script>
 
 <template>
   <n-config-provider :theme-overrides="themeOverrides">
     <n-notification-provider>
-      <router-view />
+      <n-space vertical>
+        <Header />
+        <router-view />
+      </n-space>
     </n-notification-provider>
   </n-config-provider>
 </template>

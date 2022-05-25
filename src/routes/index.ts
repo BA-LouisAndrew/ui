@@ -24,7 +24,10 @@ const routes: RouteRecordRaw[] = [
     path: "/rules",
     component: RuleList,
   },
-
+  {
+    path: "/validations/create",
+    component: Validation // TODO: create customer form
+  },
   {
     path: "/validations/:validationId",
     component: Validation,
