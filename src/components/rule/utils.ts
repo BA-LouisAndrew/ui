@@ -207,14 +207,14 @@ export const getConditionFromProps = (
 ): Condition | BooleanCondition => {
   const normalizedConditions = conditions.map((condition) => ({
     ...condition,
-    value: normalizeConditionValue(condition.value),
+    value: normalizeConditionValue(condition),
   }))
+  
+  if (conditions.length === 1) {
+    return normalizedConditions[0]
+  }
 
   if (!booleanConditionValue) {
-    if (conditions.length === 1) {
-      return normalizedConditions[0]
-    }
-
     return normalizedConditions as unknown as Condition // Error will be thrown during validation
   }
 
