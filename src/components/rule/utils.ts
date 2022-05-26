@@ -188,20 +188,38 @@ export const validateRetryStrategy = (
   return true
 }
 
+export const normalizeConditionValue = (condition: Condition) => {
+  const { type, value } = condition
+  if (type === "number") {
+    return parseFloat(value)
+  }
+
+  if (type === "boolean") {
+    return value === "true"
+  }
+
+  return value
+}
+
 export const getConditionFromProps = (
   conditions: Condition[],
   booleanConditionValue: string | undefined | null
 ): Condition | BooleanCondition => {
+  const normalizedConditions = conditions.map((condition) => ({
+    ...condition,
+    value: normalizeConditionValue(condition.value),
+  }))
+
   if (!booleanConditionValue) {
     if (conditions.length === 1) {
-      return conditions[0]
+      return normalizedConditions[0]
     }
 
-    return conditions as unknown as Condition // Error will be thrown during validation
+    return normalizedConditions as unknown as Condition // Error will be thrown during validation
   }
 
   return {
-    [booleanConditionValue]: conditions,
+    [booleanConditionValue]: normalizedConditions,
   } as BooleanCondition
 }
 
