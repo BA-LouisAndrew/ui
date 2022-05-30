@@ -1,17 +1,20 @@
 <template>
   <span v-if="isLoading"> Loading </span>
-  <div v-else-if="hasError">
-    Error!
-  </div>
   <div v-else>
     <div class="">
       Validation {{ params.validationId }}
+      <div
+        v-for="(message, index) in messages"
+        :key="index"
+      >
+        {{ JSON.stringify(JSON.parse(message), null, 2) }}
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount } from "vue"
+import { onBeforeMount, ref } from "vue"
 import { useRoute } from "vue-router"
 
 import { useFetch } from "@/composable/useFetch"
@@ -20,6 +23,8 @@ const { params } = useRoute()
 const { url, isLoading, hasError } = useFetch(
   "/validate/" + params.validationId + "/subscribe"
 )
+
+const messages = ref<string[]>([])
 
 const initEventSource = async () => {
   const eventSource = new EventSource(url)
@@ -30,14 +35,15 @@ const initEventSource = async () => {
     console.log(event)
   }
 
-  eventSource.onmessage = (message) => {
-    console.log(message)
+  eventSource.onmessage = (messageEvent) => {
+    messages.value.push(messageEvent.data)
   }
 
   eventSource.onerror = (error) => {
     console.log(error)
     isLoading.value = false
     hasError.value = true
+    eventSource.close()
   }
 }
 
