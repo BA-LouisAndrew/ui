@@ -15,6 +15,7 @@ export const useFetch = <T = object>(endpoint: string) => {
     put: <R = T>(data: Partial<T>, config: AxiosRequestConfig = {}) => axios.put<R>(url, data, config),
     delete: <R = T>(config: AxiosRequestConfig = {}) => axios.delete<R>(url, config),
     isLoading,
-    hasError
+    hasError,
+    url
   }
 }
