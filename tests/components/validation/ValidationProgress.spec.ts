@@ -23,7 +23,7 @@ describe("Validation Progress component", () => {
         validation: runningValidation,
       },
     })
-    expect(getByText("Validation is running")).toBeTruthy()
+    expect(getByText("Current fraud score")).toBeTruthy()
   })
 
   it("renders an indicator if the validation is done", () => {
@@ -33,9 +33,7 @@ describe("Validation Progress component", () => {
       },
     })
 
-    expect(getByText("Validation is done")).toBeTruthy()
     expect(getByText("Resulting fraud score")).toBeTruthy()
-    expect(getByText(validation.fraudScore)).toBeTruthy()
   })
 
   it("renders an indicator that a rule evaluation is currently in progress", () => {

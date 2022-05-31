@@ -1,74 +1,92 @@
 <script setup lang="ts">
-import { useNotification } from "naive-ui"
-import { onBeforeMount, ref } from "vue"
+import { ref, watch } from "vue"
 import { useRoute } from "vue-router"
 
 import ValidationProgress from "@/components/validation/ValidationProgress.vue"
 import { useFetch } from "@/composable/useFetch"
-import { validation as sampleValidation } from "@/seed"
 import { Validation } from "@/types"
 
-const { params } = useRoute()
-const { url, isLoading, hasError } = useFetch(
-  "/validate/" + params.validationId + "/subscribe"
-)
-const { error } = useNotification()
+const route = useRoute()
 
-const validation = ref<Validation | null>(sampleValidation)
+const { url, updateUrl, isLoading, hasError } = useFetch("")
 
-const initEventSource = async () => {
-  const eventSource = new EventSource(url)
+const validation = ref<Validation | null>(null)
+const eventSource = ref<EventSource | null>()
+const errorMessage = ref("")
 
-  eventSource.onopen = (event) => {
-    isLoading.value = false
-    console.log("event source is open")
-    console.log(event)
-  }
+const DEFAULT_ERR_MSG =
+  "Something went wrong when trying to get the latest data. Please try again later"
 
-  eventSource.onmessage = (messageEvent) => {
-    const data = messageEvent.data
-    try {
-      const parsed = JSON.parse(data)
-      if (parsed.close) {
-        closeConnection()
-        return
-      }
-
-      if (parsed.error) {
-        closeConnection()
-        error({
-          title: parsed.message,
-          content: parsed.details,
-        })
-        // TODO Handle error
-        return
-      }
-
-      validation.value = parsed as Validation
-    } catch {
-      // TODO Handle error
-    }
-  }
-
-  eventSource.onerror = (error) => {
-    console.log(error)
-    closeConnection()
-  }
-
-  const closeConnection = () => {
-    isLoading.value = false
-    hasError.value = true
-    eventSource.close()
-  }
+const initEventSource = () => {
+  hasError.value = false
+  validation.value = null
+  eventSource.value = new EventSource(url.value)
 }
 
-onBeforeMount(async () => {
-  await initEventSource()
+watch(eventSource, (source, oldSource) => {
+  console.log("event source changed")
+  if (oldSource && !oldSource.CLOSED) {
+    oldSource.close()
+  }
+
+  if (source) {
+    source.onopen = (event) => {
+      isLoading.value = false
+      console.log("event source is open")
+      console.log(event)
+    }
+
+    source.onmessage = (messageEvent) => {
+      const data = messageEvent.data
+      try {
+        const parsed = JSON.parse(data)
+        if (parsed.close) {
+          closeConnection()
+          return
+        }
+
+        if (parsed.error) {
+          closeConnection()
+          errorMessage.value = parsed.details
+          // TODO Handle error
+          return
+        }
+
+        validation.value = parsed as Validation
+      } catch {
+        // TODO Handle error
+      }
+    }
+
+    source.onerror = () => {
+      hasError.value = true
+      closeConnection()
+    }
+
+    const closeConnection = () => {
+      isLoading.value = false
+      hasError.value = true
+      source.close()
+    }
+  }
 })
+
+watch(
+  () => route.path,
+  () => {
+    updateUrl("/validate/" + route.params.validationId + "/subscribe")
+    initEventSource()
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
   <span v-if="isLoading"> Loading </span>
+  <n-alert v-else-if="hasError" title="Something went wrong" type="error">
+    {{ errorMessage || DEFAULT_ERR_MSG }}
+  </n-alert>
+
   <div v-else>
     <validation-progress v-if="validation" :validation="validation" />
   </div>
