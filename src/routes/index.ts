@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/rules/new",
-    component: NewRule
+    component: NewRule,
   },
   {
     path: "/rules/:ruleName",
@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/validations/create",
-    component: Validation // TODO: create customer form
+    component: Validation, // TODO: create customer form
   },
   {
     path: "/validations/:validationId",
