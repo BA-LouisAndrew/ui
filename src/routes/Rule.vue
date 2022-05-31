@@ -1,14 +1,8 @@
 <template>
   <span v-if="isLoading"> Loading </span>
-  <div v-else-if="hasError">
-    Error!
-  </div>
+  <div v-else-if="hasError">Error!</div>
   <div v-else>
-    <n-spin
-      :show="isActionLoading"
-      size="large"
-      stroke="#000"
-    >
+    <n-spin :show="isActionLoading" size="large" stroke="#000">
       <RuleForm
         :rule="validationRule!"
         @update="updateRule"
@@ -41,7 +35,7 @@ const {
   hasError,
   isLoading,
   put: putUpdateRule,
-  delete: deleteRuleMutation
+  delete: deleteRuleMutation,
 } = useFetch<ValidationRule>("/rules/" + params.ruleName)
 
 provide("notification", notification)

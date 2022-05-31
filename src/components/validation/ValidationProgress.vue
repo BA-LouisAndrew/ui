@@ -6,7 +6,8 @@ import {
   Sync as SyncCircle,
   Time as TimeCircle,
 } from "@vicons/ionicons5"
-import { computed } from "vue"
+import { NumberAnimationInst } from "naive-ui"
+import { computed, ref, watch } from "vue"
 
 import { Validation, ValidationEventStatus } from "@/types"
 
@@ -14,8 +15,19 @@ const props = defineProps<{
   validation: Validation
 }>()
 
+const numberAnimationRef = ref<NumberAnimationInst>()
+const prevFraudScore = ref(0)
+
 const isValidationDone = computed(
   () => props.validation.events.length === props.validation.runnedChecks
+)
+
+watch(
+  () => props.validation,
+  (_, oldValue) => {
+    prevFraudScore.value = oldValue.fraudScore
+    numberAnimationRef.value?.play()
+  }
 )
 
 const getTimelineItemStatus = (status: ValidationEventStatus) => {
@@ -48,26 +60,36 @@ const getTimelineItemContent = (status: ValidationEventStatus) => {
 </script>
 
 <template>
-  <n-space data-testid="validation-progress" :size="16">
-    <template v-if="isValidationDone">
-      <n-h4>
-        Validation <n-text code> {{ validation.validationId }} </n-text> is done
-      </n-h4>
-      <n-space>
-        <n-h5> Resulting fraud score </n-h5>
-        <n-h5>
-          {{ validation?.fraudScore }}
-        </n-h5>
+  <n-space data-testid="validation-progress" :size="16" vertical>
+    <n-space vertical>
+      <template v-if="isValidationDone">
+        <n-h4 style="margin: 0">
+          Validation <n-text code> {{ validation.validationId }} </n-text> is
+          done!
+        </n-h4>
+      </template>
+      <n-space v-else>
+        <n-icon size="24">
+          <sync-circle class="rotate" />
+        </n-icon>
+        <n-h4>
+          Validation <n-text code> {{ validation.validationId }} </n-text> is
+          running
+        </n-h4>
       </n-space>
-    </template>
-    <n-space v-else>
-      <n-icon size="24">
-        <sync-circle class="rotate" />
-      </n-icon>
-      <n-h4>
-        Validation <n-text code> {{ validation.validationId }} </n-text> is
-        running
-      </n-h4>
+
+      <n-statistic
+        :label="
+          isValidationDone ? 'Resulting fraud score' : 'Current fraud score'
+        "
+      >
+        <n-number-animation
+          ref="numberAnimationRef"
+          :from="prevFraudScore"
+          :to="validation.fraudScore"
+          :precision="2"
+        />
+      </n-statistic>
     </n-space>
 
     <n-timeline class="timeline">
@@ -145,6 +167,7 @@ const getTimelineItemContent = (status: ValidationEventStatus) => {
 <style lang="scss" scoped>
 .timeline {
   margin-left: 8px;
+  margin-top: 16px;
 }
 
 .ghost {
