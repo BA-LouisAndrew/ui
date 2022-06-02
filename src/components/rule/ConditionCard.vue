@@ -1,32 +1,15 @@
 <template>
   <n-card data-testid="condition-card">
-    <n-form
-      ref="formRef"
-      :model="formValues"
-      :rules="formRules"
-    >
-      <n-grid
-        x-gap="12"
-        y-gap="12"
-        :cols="2"
-      >
+    <n-form ref="formRef" :model="formValues" :rules="formRules">
+      <n-grid x-gap="12" y-gap="12" :cols="2">
         <n-gi>
-          <n-form-item
-            label="Path"
-            path="path"
-          >
-            <n-input
-              v-model:value="formValues.path"
-              placeholder="Path"
-            />
+          <n-form-item label="Path" path="path">
+            <n-input v-model:value="formValues.path" placeholder="Path" />
           </n-form-item>
         </n-gi>
 
         <n-gi>
-          <n-form-item
-            label="Type"
-            path="type"
-          >
+          <n-form-item label="Type" path="type">
             <n-select
               v-model:value="formValues.type"
               :options="typeSelectOptions"
@@ -35,10 +18,7 @@
         </n-gi>
 
         <n-gi>
-          <n-form-item
-            label="Operator"
-            path="operator"
-          >
+          <n-form-item label="Operator" path="operator">
             <n-select
               v-model:value="formValues.operator"
               :options="operatorSelectOptions"
@@ -53,18 +33,12 @@
             label="Value"
             path="value"
           >
-            <n-input
-              v-model:value="formValues.value"
-              placeholder="Value"
-            />
+            <n-input v-model:value="formValues.value" placeholder="Value" />
           </n-form-item>
         </n-gi>
-        
+
         <n-gi :span="2">
-          <n-form-item
-            label="Fail message"
-            path="failMessage"
-          >
+          <n-form-item label="Fail message" path="failMessage">
             <n-input
               v-model:value="formValues.failMessage"
               placeholder="Fail message"
@@ -73,12 +47,7 @@
         </n-gi>
       </n-grid>
       <n-space justify="end">
-        <n-button
-          secondary
-          type="error"
-          size="small"
-          @click="emit('delete')"
-        >
+        <n-button secondary type="error" size="small" @click="emit('delete')">
           Delete
         </n-button>
       </n-space>
@@ -96,9 +65,9 @@ import { Condition, ConditionType } from "@/types"
 import { getAvailableOperators } from "./utils"
 
 type Props = {
-  value?: Condition;
-  conditionId?: string;
-};
+  value?: Condition
+  conditionId?: string
+}
 
 const props = withDefaults(defineProps<Props>(), {
   conditionId: "default",
@@ -111,7 +80,7 @@ const formValues = reactive({
   type: props.value?.type || null,
   operator: props.value?.operator || null,
   value: props.value ? `${props.value.value}` : "",
-  failMessage: props.value?.failMessage || ""
+  failMessage: props.value?.failMessage || "",
 })
 
 const valueFormRule = computed<FormItemRule[]>(() => [
@@ -128,7 +97,7 @@ const valueFormRule = computed<FormItemRule[]>(() => [
       return true
     },
     message: "Please input a valid number",
-    trigger: "blur"
+    trigger: "blur",
   },
 ])
 

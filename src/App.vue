@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { darkTheme } from "naive-ui"
+
 import Header from "./components/common/Header.vue"
 import { themeOverrides } from "./theme"
 </script>
 
 <template>
-  <n-config-provider :theme-overrides="themeOverrides">
+  <n-config-provider :theme-overrides="themeOverrides" :theme="darkTheme">
     <n-notification-provider>
       <n-space vertical>
         <Header />
@@ -15,9 +17,13 @@ import { themeOverrides } from "./theme"
 </template>
 
 <style>
+body {
+  background-color: #222;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+}
 #app {
   padding: 32px 128px;
-  font-family: "Roboto Mono", monospace;
 }
 
 .mt-32 {
@@ -25,7 +31,7 @@ import { themeOverrides } from "./theme"
 }
 
 .info {
-  color: #5c5c5c;
+  color: #ababab;
   font-style: italic;
   font-size: 0.8rem;
 }

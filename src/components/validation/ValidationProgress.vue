@@ -213,12 +213,12 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
 }
 
 .ghost {
-  color: #9d9d9d !important;
+  color: #ababab !important;
 }
 
 .code {
   padding: 16px 24px;
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: rgba(0, 0, 0, 0.28);
   border-radius: 4px;
 }
 </style>
