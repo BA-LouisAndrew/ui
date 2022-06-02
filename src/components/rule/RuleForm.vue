@@ -87,7 +87,7 @@
       </n-grid>
     </n-space>
 
-    <n-space justify="space-between">
+    <n-space class="mt-32" justify="space-between">
       <n-popconfirm
         v-if="isEditingRule"
         :positive-button-props="{ type: 'error' }"
@@ -241,10 +241,6 @@ const formRules: { [key: string]: FormItemRule } = {
 </script>
 
 <style lang="scss" scoped>
-.rule-form {
-  min-height: calc(100vh - 64px);
-}
-
 .priority-input {
   width: 86px;
 }

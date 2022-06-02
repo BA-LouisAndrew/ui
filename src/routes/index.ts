@@ -2,6 +2,7 @@ import { RouteRecordRaw } from "vue-router"
 
 import Home from "./Home.vue"
 import NewRule from "./NewRule.vue"
+import NewValidation from "./NewValidation.vue"
 import Rule from "./Rule.vue"
 import RuleList from "./RuleList.vue"
 import Validation from "./Validation.vue"
@@ -26,7 +27,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/validations/create",
-    component: Validation, // TODO: create customer form
+    component: NewValidation,
   },
   {
     path: "/validations/:validationId",
