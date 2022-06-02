@@ -28,7 +28,6 @@ describe("Rule list item", () => {
     const { getByText } = renderComponent()
 
     expect(getByText(rule.name)).toBeTruthy()
-    expect(getByText(rule.endpoint)).toBeTruthy()
     expect(getByText("Enabled")).toBeTruthy()
   })
 })

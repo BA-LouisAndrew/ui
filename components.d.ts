@@ -44,6 +44,7 @@ declare module '@vue/runtime-core' {
     NSpin: typeof import('naive-ui')['NSpin']
     NStatistic: typeof import('naive-ui')['NStatistic']
     NSwitch: typeof import('naive-ui')['NSwitch']
+    NTag: typeof import('naive-ui')['NTag']
     NText: typeof import('naive-ui')['NText']
     NTime: typeof import('naive-ui')['NTime']
     NTimeline: typeof import('naive-ui')['NTimeline']
@@ -55,6 +56,7 @@ declare module '@vue/runtime-core' {
     Rule: typeof import('./src/components/rule.vue')['default']
     RuleForm: typeof import('./src/components/rule/RuleForm.vue')['default']
     RuleListItem: typeof import('./src/components/rule-list/RuleListItem.vue')['default']
+    ValidationListItem: typeof import('./src/components/validation-list/ValidationListItem.vue')['default']
     ValidationProgress: typeof import('./src/components/validation/ValidationProgress.vue')['default']
   }
 }

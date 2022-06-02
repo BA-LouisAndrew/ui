@@ -1,30 +1,29 @@
 <template>
   <router-link
-    class="rule-list-item"
-    :to="`/rules/${props.rule.name}`"
-    data-testid="rule-list-item"
+    class="validation-list-item"
+    :to="`/validations/${props.validation.validationId}`"
+    data-testid="validation-list-item"
   >
     <n-card>
       <n-space align="center" justify="space-between">
         <n-space vertical>
           <n-text>
-            {{ props.rule.name }}
+            {{ props.validation.validationId }}
           </n-text>
         </n-space>
 
         <n-tag
           size="medium"
-          :type="props.rule.skip ? 'error' : 'success'"
+          :type="isValidationRunning ? 'info' : 'success'"
           round
         >
           <template #avatar>
             <n-icon size="22">
-              <close-circle v-if="props.rule.skip" />
+              <sync-circle v-if="isValidationRunning" class="rotate" />
               <checkmark-circle v-else />
             </n-icon>
           </template>
-
-          {{ props.rule.skip ? "Disabled" : "Enabled" }}
+          {{ isValidationRunning ? "Running" : "Done" }}
         </n-tag>
       </n-space>
     </n-card>
@@ -34,16 +33,21 @@
 <script setup lang="ts">
 import {
   CheckmarkCircleOutline as CheckmarkCircle,
-  CloseCircleOutline as CloseCircle,
+  Sync as SyncCircle,
 } from "@vicons/ionicons5"
+import { computed } from "vue"
 
-import { ValidationRule } from "@/types"
+import { Validation } from "@/types"
+import { isValidationRunning as _isValidationRunning } from "@/utils"
 
-const props = defineProps<{ rule: ValidationRule }>()
+const props = defineProps<{ validation: Validation }>()
+const isValidationRunning = computed(() =>
+  _isValidationRunning(props.validation)
+)
 </script>
 
 <style lang="scss" scoped>
-.rule-list-item {
+.validation-list-item {
   text-decoration: none;
 
   h3 {

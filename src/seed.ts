@@ -121,6 +121,8 @@ export const runningValidation: Validation = {
 
 export const doneValidation: Validation = {
   ...validation,
+  totalChecks: 1,
+  skippedChecks: [],
   runnedChecks: 1,
   events: [
     {
