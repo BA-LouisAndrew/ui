@@ -20,6 +20,10 @@ import { themeOverrides } from "./theme"
   font-family: "Roboto Mono", monospace;
 }
 
+.mt-32 {
+  margin-top: 32px !important;
+}
+
 .info {
   color: #5c5c5c;
   font-style: italic;

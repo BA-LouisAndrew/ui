@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  Ban as BanCircle,
   CheckmarkCircle,
   CloseCircle,
   RefreshCircle,
@@ -95,6 +96,26 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
     </n-space>
 
     <n-timeline class="timeline">
+      <n-timeline-item
+        v-for="skippedCheck in validation.skippedChecks"
+        :key="skippedCheck"
+      >
+        <template #header>
+          <n-h5 class="ghost">
+            {{ skippedCheck }}
+          </n-h5>
+        </template>
+
+        <n-text :depth="3">
+          <n-text code>{{ skippedCheck }}</n-text> is skipped
+        </n-text>
+
+        <template #icon>
+          <n-icon size="24" :depth="3">
+            <ban-circle />
+          </n-icon>
+        </template>
+      </n-timeline-item>
       <n-timeline-item
         v-for="event in validation.events"
         :key="event.name"

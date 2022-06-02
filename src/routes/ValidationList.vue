@@ -34,8 +34,15 @@ onBeforeMount(async () => {
         :key="validation.validationId"
         :validation="validation"
       />
+      <router-link class="create-validation" to="/validations/create">
+        <n-button type="primary"> Create new validation </n-button>
+      </router-link>
     </n-space>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.create-validation {
+  text-decoration: none;
+}
+</style>
