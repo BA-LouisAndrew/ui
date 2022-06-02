@@ -30,10 +30,8 @@ watch(eventSource, (source, oldSource) => {
   }
 
   if (source) {
-    source.onopen = (event) => {
+    source.onopen = () => {
       isLoading.value = false
-      console.log("event source is open")
-      console.log(event)
     }
 
     source.onmessage = (messageEvent) => {
@@ -46,8 +44,9 @@ watch(eventSource, (source, oldSource) => {
         }
 
         if (parsed.error) {
-          closeConnection()
           errorMessage.value = parsed.details
+          hasError.value = true
+          closeConnection()
           // TODO Handle error
           return
         }
@@ -58,14 +57,15 @@ watch(eventSource, (source, oldSource) => {
       }
     }
 
-    source.onerror = () => {
+    source.onerror = (errorMessage) => {
+      console.log(errorMessage)
       hasError.value = true
       closeConnection()
     }
 
     const closeConnection = () => {
+      console.log("Closing connection")
       isLoading.value = false
-      hasError.value = true
       source.close()
     }
   }
