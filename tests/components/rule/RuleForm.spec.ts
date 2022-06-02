@@ -1,42 +1,45 @@
-import { fireEvent,render, RenderOptions } from "@testing-library/vue"
+import { fireEvent, render, RenderOptions } from "@testing-library/vue"
 
 import RuleForm from "@/components/rule/RuleForm.vue"
 import { rule } from "@/seed"
 
 describe("Rule form component", () => {
-  const renderComponent = (options: RenderOptions = {
-    props: {
-      rule
+  const renderComponent = (
+    options: RenderOptions = {
+      props: {
+        rule,
+      },
     }
-  }) => render(RuleForm, options)
-  
+  ) => render(RuleForm, options)
+
   it("renders the component", () => {
-    const { getByTestId } = renderComponent() 
+    const { getByTestId } = renderComponent()
     expect(getByTestId("rule-form")).toBeTruthy()
   })
-  
+
   describe("edit rule", () => {
     it("renders the text `Editing <rule name>` if edit mode is on", () => {
       const { getByText } = renderComponent()
-      expect(getByText("Editing '" + rule.name  + "'")).toBeTruthy()
+      expect(getByText("Editing")).toBeTruthy()
+      expect(getByText(rule.name)).toBeTruthy()
     })
-    
+
     it("disables editing on the `name` field", () => {
       const { getByPlaceholderText } = renderComponent()
       expect(getByPlaceholderText("Name").hasAttribute("disabled")).toBeTruthy()
     })
-   
+
     it("displays the delete button", () => {
       const { getByRole } = renderComponent()
       expect(getByRole("button", { name: "Delete rule" })).toBeTruthy()
     })
-   
+
     it("displays the `Save changes` button", () => {
       const { getByRole } = renderComponent()
       expect(getByRole("button", { name: "Save changes" }))
     })
   })
-  
+
   describe("create new rule", () => {
     it("renders the text `Create new rule` if create mode is on", () => {
       const { getByText } = renderComponent({ props: {} })

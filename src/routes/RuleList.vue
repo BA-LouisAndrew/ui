@@ -1,22 +1,11 @@
 <template>
   <span v-if="isLoading"> Loading </span>
-  <div v-else-if="hasError">
-    Error!
-  </div>
+  <div v-else-if="hasError">Error!</div>
   <div v-else>
     <n-space vertical>
-      <RuleListItem
-        v-for="rule in rulesList"
-        :key="rule.name"
-        :rule="rule"
-      />
-      <router-link
-        class="new-rule"
-        to="/rules/new"
-      >
-        <n-button type="primary">
-          Add new rule
-        </n-button>
+      <RuleListItem v-for="rule in rulesList" :key="rule.name" :rule="rule" />
+      <router-link class="new-rule" to="/rules/new">
+        <n-button type="primary"> Add new rule </n-button>
       </router-link>
     </n-space>
   </div>
@@ -40,7 +29,7 @@ const {
   isLoading,
 } = useFetch<ValidationRule[]>("/rules")
 const notification = useNotification()
-const { success, info }  = notification
+const { success, info } = notification
 
 provide("notification", notification)
 
@@ -60,21 +49,21 @@ onBeforeMount(async () => {
   if (updateSuccess) {
     success({
       title: "Rule updated",
-      content: `Rule '${updateSuccess}' updated successfully`
+      content: `Rule '${updateSuccess}' updated successfully`,
     })
   }
 
   if (createSuccess) {
     success({
       title: "Rule created",
-      content: `Rule '${createSuccess}' created successfully`
+      content: `Rule '${createSuccess}' created successfully`,
     })
   }
-  
+
   if (deleteSuccess) {
     info({
       title: "Rule deleted",
-      content: `Rule '${deleteSuccess}' deleted successfully`
+      content: `Rule '${deleteSuccess}' deleted successfully`,
     })
   }
 })

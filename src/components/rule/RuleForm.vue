@@ -7,24 +7,16 @@
   >
     <n-space vertical>
       <h2>
-        {{ CONSTANTS.title }}
+        {{ isEditingRule ? "Editing " : "Create a new rule" }}
+        <n-text v-if="isEditingRule" code>
+          {{ rule!.name }}
+        </n-text>
       </h2>
-      <n-grid
-        :cols="3"
-        :x-gap="120"
-        :y-gap="32"
-      >
+      <n-grid :cols="3" :x-gap="120" :y-gap="32">
         <n-gi :span="1">
-          <n-form
-            ref="formRef"
-            :model="formValues"
-            :rules="formRules"
-          >
+          <n-form ref="formRef" :model="formValues" :rules="formRules">
             <n-space vertical>
-              <n-form-item
-                label="Name"
-                path="name"
-              >
+              <n-form-item label="Name" path="name">
                 <n-input
                   v-model:value="formValues.name"
                   :disabled="isEditingRule"
@@ -33,18 +25,11 @@
               </n-form-item>
 
               <n-space :size="[32, 0]">
-                <n-form-item
-                  label="Enabled"
-                  path="enabled"
-                >
+                <n-form-item label="Enabled" path="enabled">
                   <n-switch v-model:value="formValues.enabled" />
                 </n-form-item>
 
-                <n-form-item
-                  label="Priority"
-                  path="priority"
-                  :label-width="64"
-                >
+                <n-form-item label="Priority" path="priority" :label-width="64">
                   <n-input-number
                     v-model:value="formValues.priority"
                     class="priority-input"
@@ -55,27 +40,18 @@
                 </n-form-item>
               </n-space>
 
-              <n-form-item
-                label="Endpoint"
-                path="endpoint"
-              >
+              <n-form-item label="Endpoint" path="endpoint">
                 <n-input v-model:value="formValues.endpoint" />
               </n-form-item>
 
-              <n-form-item
-                label="Method"
-                path="method"
-              >
+              <n-form-item label="Method" path="method">
                 <n-select
                   v-model:value="formValues.method"
                   :options="httpMethodOptions"
                 />
               </n-form-item>
 
-              <n-form-item
-                label="Fail score"
-                path="failScore"
-              >
+              <n-form-item label="Fail score" path="failScore">
                 <n-input-number
                   v-model:value="formValues.failScore"
                   :min="0"
@@ -99,10 +75,7 @@
         </n-gi>
 
         <n-gi :span="2">
-          <n-space
-            :space="[0, 64]"
-            vertical
-          >
+          <n-space :space="[0, 64]" vertical>
             <condition-list
               v-model:conditions="condition.conditions"
               v-model:boolean-condition="condition.booleanConditionValue"
@@ -128,21 +101,13 @@
           </n-icon>
         </template>
         <template #trigger>
-          <n-button
-            primary
-            type="error"
-          >
-            Delete rule
-          </n-button>
+          <n-button primary type="error"> Delete rule </n-button>
         </template>
         Are you sure you want to delete this rule?
       </n-popconfirm>
 
       <span v-else />
-      <n-button
-        type="primary"
-        @click="CONSTANTS.action"
-      >
+      <n-button type="primary" @click="CONSTANTS.action">
         {{ CONSTANTS.buttonText }}
       </n-button>
     </n-space>
@@ -158,6 +123,7 @@ import KeyValueInput from "@/components/common/KeyValueInput.vue"
 import { HTTPMethod, ValidationRule } from "@/types"
 
 import ConditionList from "./ConditionList.vue"
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import RetryStrategy from "./RetryStrategy.vue"
 import {
   genericObjectToKeyValuePairs,
@@ -213,7 +179,7 @@ const isFormValid = async (value: ValidationRule) =>
       if (!errors) {
         const isConditionValid = validateCondition(value.condition)
         const isRetryStrategyValid = validateRetryStrategy(value.retryStrategy)
-        console.log({ isConditionValid, isRetryStrategyValid })	
+        console.log({ isConditionValid, isRetryStrategyValid })
         return resolve(isConditionValid && isRetryStrategyValid)
       }
 
@@ -237,21 +203,14 @@ const getRuleValue = (): ValidationRule => {
     requestUrlParameter: keyValuePairsToGenericObject(
       requestUrlParameter.value
     ),
-    retryStrategy: retryStrategy.value 
+    retryStrategy: retryStrategy.value,
   }
 }
 
-const CONSTANTS = isEditingRule
-  ? {
-    title: `Editing '${props.rule.name}'`,
-    buttonText: "Save changes",
-    action: updateRule,
-  }
-  : {
-    title: "Create a new rule",
-    buttonText: "Create rule",
-    action: createRule,
-  }
+const CONSTANTS = {
+  buttonText: isEditingRule ? "Save changes" : "Create rule",
+  action: isEditingRule ? updateRule : createRule,
+}
 
 const formRules: { [key: string]: FormItemRule } = {
   name: {
