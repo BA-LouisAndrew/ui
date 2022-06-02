@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import { MenuOption } from "naive-ui"
-import { h, ref, watch } from "vue"
+import {
+  DocumentTextOutline,
+  HomeOutline,
+  SearchOutline,
+} from "@vicons/ionicons5"
+import { MenuOption, NIcon } from "naive-ui"
+import { Component, h, ref, watch } from "vue"
 import { RouterLink, useRoute } from "vue-router"
-
 enum PathOptions {
- HOME = "home",
- RULES = "rules",
- VALIDATIONS = "validations"
+  HOME = "home",
+  RULES = "rules",
+  VALIDATIONS = "validations",
+}
+
+function renderIcon(icon: Component) {
+  return () => h(NIcon, null, { default: () => h(icon) })
 }
 
 const route = useRoute()
@@ -21,8 +29,9 @@ const menuOptions: MenuOption[] = [
         },
         { default: () => "Home" }
       ),
+    icon: renderIcon(HomeOutline),
     key: PathOptions.HOME,
-  }, 
+  },
   {
     label: () =>
       h(
@@ -32,6 +41,7 @@ const menuOptions: MenuOption[] = [
         },
         { default: () => "Rules" }
       ),
+    icon: renderIcon(DocumentTextOutline),
     key: PathOptions.RULES,
   },
   {
@@ -43,25 +53,30 @@ const menuOptions: MenuOption[] = [
         },
         { default: () => "Validations" }
       ),
+    icon: renderIcon(SearchOutline),
     key: PathOptions.VALIDATIONS,
   },
 ]
 
-watch(() => route.path, value => {
-  if (value.includes("/rules")) {
-    currentPath.value = PathOptions.RULES
-    return
-  }
-  
-  if (value.includes("/validations")) {
-    currentPath.value= PathOptions.VALIDATIONS
-    return
-  }
-  
-  if (value === "/") {
-    currentPath.value = PathOptions.HOME
-  }
-}, { immediate: true })
+watch(
+  () => route.path,
+  (value) => {
+    if (value.includes("/rules")) {
+      currentPath.value = PathOptions.RULES
+      return
+    }
+
+    if (value.includes("/validations")) {
+      currentPath.value = PathOptions.VALIDATIONS
+      return
+    }
+
+    if (value === "/") {
+      currentPath.value = PathOptions.HOME
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>

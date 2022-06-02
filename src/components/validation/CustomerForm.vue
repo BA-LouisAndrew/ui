@@ -4,6 +4,8 @@ import { reactive, ref } from "vue"
 
 import { Customer } from "@/types"
 
+import { presetCustomers } from "./customers"
+
 const emit = defineEmits(["submit"])
 const formRef = ref<FormInst>()
 const formValues = reactive<Customer>({
@@ -26,6 +28,10 @@ const onSubmit = () => {
       emit("submit", formValues)
     }
   })
+}
+
+const applySampleCustomer = (sampleCustomer: Customer) => {
+  Object.assign(formValues, sampleCustomer)
 }
 
 const formRules: { [key: string]: FormItemRule | FormItemRule[] } = {
@@ -86,7 +92,7 @@ const formRules: { [key: string]: FormItemRule | FormItemRule[] } = {
     data-testid="customer-form"
   >
     <h2>Create New Validation</h2>
-    <n-space>
+    <n-space :size="64">
       <n-form ref="formRef" :model="formValues" :rules="formRules">
         <n-grid :cols="2" :x-gap="12" :y-gap="8">
           <n-form-item-gi label="First name" path="firstName">
@@ -168,6 +174,21 @@ const formRules: { [key: string]: FormItemRule | FormItemRule[] } = {
           </n-gi>
         </n-grid>
       </n-form>
+
+      <n-space vertical>
+        <n-text strong> Prefill form with </n-text>
+        <n-space vertical>
+          <n-button
+            v-for="sample in presetCustomers"
+            :key="sample.key"
+            type="primary"
+            secondary
+            @click="applySampleCustomer(sample.data)"
+          >
+            {{ sample.label }}
+          </n-button>
+        </n-space>
+      </n-space>
     </n-space>
 
     <n-space justify="end">

@@ -32,8 +32,6 @@ watch(eventSource, (source, oldSource) => {
   if (source) {
     source.onopen = (event) => {
       isLoading.value = false
-      console.log("event source is open")
-      console.log(event)
     }
 
     source.onmessage = (messageEvent) => {
@@ -58,7 +56,8 @@ watch(eventSource, (source, oldSource) => {
       }
     }
 
-    source.onerror = () => {
+    source.onerror = (errorMessage) => {
+      console.log(errorMessage)
       hasError.value = true
       closeConnection()
     }
