@@ -95,95 +95,114 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
       </n-statistic>
     </n-space>
 
-    <n-timeline class="timeline">
-      <n-timeline-item
-        v-for="skippedCheck in validation.skippedChecks"
-        :key="skippedCheck"
-      >
-        <template #header>
-          <n-h5 class="ghost">
-            {{ skippedCheck }}
-          </n-h5>
-        </template>
+    <n-space :size="128">
+      <n-timeline class="timeline">
+        <n-timeline-item
+          v-for="skippedCheck in validation.skippedChecks"
+          :key="skippedCheck"
+        >
+          <template #header>
+            <n-h5 class="ghost">
+              {{ skippedCheck }}
+            </n-h5>
+          </template>
 
-        <n-text :depth="3">
-          <n-text code>{{ skippedCheck }}</n-text> is skipped
-        </n-text>
-
-        <template #icon>
-          <n-icon size="24" :depth="3">
-            <ban-circle />
-          </n-icon>
-        </template>
-      </n-timeline-item>
-      <n-timeline-item
-        v-for="event in validation.events"
-        :key="event.name"
-        :type="getTimelineItemStatus(event.status)"
-      >
-        <template #header>
-          <n-h5 :class="event.status === 'NOT_STARTED' && 'ghost'">
-            {{ event.name }}
-          </n-h5>
-        </template>
-
-        <n-space :size="8" vertical>
-          <n-text :class="event.status === 'NOT_STARTED' && 'ghost'">
-            {{ getTimelineItemContent(event.status) }}
+          <n-text :depth="3">
+            <n-text code>{{ skippedCheck }}</n-text> is skipped
           </n-text>
-          <n-collapse v-if="event.messages?.length">
-            <n-collapse-item>
-              <template #header>
-                <n-text depth="3"> Messages </n-text>
-              </template>
 
-              <n-text
-                v-for="(message, index) in event.messages"
-                :key="index"
-                code
-              >
-                {{ message }}
-              </n-text>
-            </n-collapse-item>
-          </n-collapse>
-        </n-space>
+          <template #icon>
+            <n-icon size="24" :depth="3">
+              <ban-circle />
+            </n-icon>
+          </template>
+        </n-timeline-item>
+        <n-timeline-item
+          v-for="event in validation.events"
+          :key="event.name"
+          :type="getTimelineItemStatus(event.status)"
+        >
+          <template #header>
+            <n-h5 :class="event.status === 'NOT_STARTED' && 'ghost'">
+              {{ event.name }}
+            </n-h5>
+          </template>
 
-        <template #footer>
-          <n-space :space="8" style="margin-top: 8px">
-            <n-space v-if="event.dateStarted">
-              Date started:
-              <n-time
-                :time="new Date(event.dateStarted).getTime()"
-                :format="TIME_FORMAT"
-              />
-            </n-space>
+          <n-space :size="8" vertical>
+            <n-text :class="event.status === 'NOT_STARTED' && 'ghost'">
+              {{ getTimelineItemContent(event.status) }}
+            </n-text>
+            <n-collapse v-if="event.messages?.length">
+              <n-collapse-item>
+                <template #header>
+                  <n-text depth="3"> Messages </n-text>
+                </template>
 
-            <template v-if="event.dateEnded">
-              <span>|</span>
-              <n-space>
-                Date ended:
+                <n-text
+                  v-for="(message, index) in event.messages"
+                  :key="index"
+                  code
+                >
+                  {{ message }}
+                </n-text>
+              </n-collapse-item>
+            </n-collapse>
+          </n-space>
+
+          <template #footer>
+            <n-space :space="8" style="margin-top: 8px">
+              <n-space v-if="event.dateStarted">
+                Date started:
                 <n-time
-                  :time="new Date(event.dateEnded).getTime()"
+                  :time="new Date(event.dateStarted).getTime()"
                   :format="TIME_FORMAT"
                 />
               </n-space>
-            </template>
-          </n-space>
-        </template>
 
-        <template #icon>
-          <n-icon
-            size="24"
-            :depth="event.status === 'NOT_STARTED' ? 3 : undefined"
-          >
-            <checkmark-circle v-if="event.status === 'PASSED'" />
-            <close-circle v-else-if="event.status === 'FAILED'" />
-            <refresh-circle v-else-if="event.status === 'RUNNING'" />
-            <time-circle v-else />
-          </n-icon>
-        </template>
-      </n-timeline-item>
-    </n-timeline>
+              <template v-if="event.dateEnded">
+                <span>|</span>
+                <n-space>
+                  Date ended:
+                  <n-time
+                    :time="new Date(event.dateEnded).getTime()"
+                    :format="TIME_FORMAT"
+                  />
+                </n-space>
+              </template>
+            </n-space>
+          </template>
+
+          <template #icon>
+            <n-icon
+              size="24"
+              :depth="event.status === 'NOT_STARTED' ? 3 : undefined"
+            >
+              <checkmark-circle v-if="event.status === 'PASSED'" />
+              <close-circle v-else-if="event.status === 'FAILED'" />
+              <refresh-circle v-else-if="event.status === 'RUNNING'" />
+              <time-circle v-else />
+            </n-icon>
+          </template>
+        </n-timeline-item>
+      </n-timeline>
+
+      <n-space :size="16" style="overflow: auto" vertical>
+        <n-text code> Customer payload </n-text>
+        <div class="code">
+          <n-code
+            :code="
+              JSON.stringify(
+                props.validation.additionalInfo.customerInformation,
+                null,
+                2
+              )
+            "
+            word-wrap
+            language="json"
+          />
+        </div>
+      </n-space>
+    </n-space>
   </n-space>
 </template>
 
@@ -194,6 +213,12 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
 }
 
 .ghost {
-  color: #9d9d9d !important;
+  color: #ababab !important;
+}
+
+.code {
+  padding: 16px 24px;
+  background-color: rgba(0, 0, 0, 0.28);
+  border-radius: 4px;
 }
 </style>

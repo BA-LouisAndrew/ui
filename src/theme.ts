@@ -16,8 +16,7 @@ export const themeOverrides: GlobalThemeOverrides = {
   },
   Input: {},
   Card: {
-    color: "#F8F8F8",
-    borderColor: "rgba(29, 156, 72, 0.5)",
+    color: "#292929",
   },
   Radio: {
     buttonColorActive: "#1D9C48",
