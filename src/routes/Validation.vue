@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import hljs from "highlight.js/lib/core"
+import json from "highlight.js/lib/languages/json"
 import { ref, watch } from "vue"
 import { useRoute } from "vue-router"
 
 import ValidationProgress from "@/components/validation/ValidationProgress.vue"
 import { useFetch } from "@/composable/useFetch"
 import { Validation } from "@/types"
+import { isValidationRunning } from "@/utils"
 
+hljs.registerLanguage("json", json)
 const route = useRoute()
 
 const { url, updateUrl, isLoading, hasError } = useFetch("")
@@ -52,6 +56,9 @@ watch(eventSource, (source, oldSource) => {
         }
 
         validation.value = parsed as Validation
+        if (!isValidationRunning(parsed)) {
+          closeConnection()
+        }
       } catch {
         // TODO Handle error
       }
@@ -88,7 +95,9 @@ watch(
   </n-alert>
 
   <div v-else>
-    <validation-progress v-if="validation" :validation="validation" />
+    <n-config-provider :hljs="hljs">
+      <validation-progress v-if="validation" :validation="validation" />
+    </n-config-provider>
   </div>
 </template>
 
