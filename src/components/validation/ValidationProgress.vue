@@ -3,7 +3,7 @@ import {
   Ban as BanCircle,
   CheckmarkCircle,
   CloseCircle,
-  RefreshCircle,
+  PlayCircle,
   Sync as SyncCircle,
   Time as TimeCircle,
 } from "@vicons/ionicons5"
@@ -95,7 +95,7 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
       </n-statistic>
     </n-space>
 
-    <n-space :size="128">
+    <n-space :size="[128, 48]">
       <n-timeline class="timeline">
         <n-timeline-item
           v-for="skippedCheck in validation.skippedChecks"
@@ -150,7 +150,7 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
           </n-space>
 
           <template #footer>
-            <n-space :space="8" style="margin-top: 8px">
+            <n-space :size="8" style="margin-top: 8px">
               <n-space v-if="event.dateStarted">
                 Date started:
                 <n-time
@@ -179,7 +179,7 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
             >
               <checkmark-circle v-if="event.status === 'PASSED'" />
               <close-circle v-else-if="event.status === 'FAILED'" />
-              <refresh-circle v-else-if="event.status === 'RUNNING'" />
+              <play-circle v-else-if="event.status === 'RUNNING'" />
               <time-circle v-else />
             </n-icon>
           </template>

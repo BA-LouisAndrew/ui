@@ -2,14 +2,14 @@
   <span v-if="isLoading"> Loading </span>
   <div v-else-if="hasError">Error!</div>
   <div v-else>
-    <n-spin :show="isActionLoading" size="large" stroke="#000">
+    <n-spin :show="isActionLoading" size="large" stroke="#fff">
       <RuleForm
         :rule="validationRule!"
         @update="updateRule"
         @delete="deleteRule"
       />
       <template #description>
-        <h3 style="color: black">
+        <h3 style="color: white">
           {{ actionDescription }}
         </h3>
       </template>
