@@ -40,10 +40,10 @@ const onSubmitForm = async (customer: Customer) => {
 
 <template>
   <span v-if="hasError">Error</span>
-  <n-spin v-else :show="isLoading" size="large" stroke="#000">
+  <n-spin v-else :show="isLoading" size="large" stroke="#fff">
     <CustomerForm @submit="onSubmitForm" />
     <template #description>
-      <h3 style="color: black">Scheduling validation</h3>
+      <h3 style="color: white">Scheduling validation</h3>
     </template>
   </n-spin>
 </template>

@@ -1,8 +1,8 @@
 <template>
-  <n-spin :show="isLoading" size="large" stroke="#000">
+  <n-spin :show="isLoading" size="large" stroke="#fff">
     <RuleForm @create="createRule" />
     <template #description>
-      <h3 style="color: black">Creating rule</h3>
+      <h3 style="color: white">Creating rule</h3>
     </template>
   </n-spin>
 </template>
