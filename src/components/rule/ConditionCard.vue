@@ -4,7 +4,13 @@
       <n-grid x-gap="12" y-gap="12" :cols="2">
         <n-gi>
           <n-form-item label="Path" path="path">
-            <n-input v-model:value="formValues.path" placeholder="Path" />
+            <n-auto-complete
+              v-model:value="formValues.path"
+              :options="options.path"
+              :render-label="renderLabel"
+              :get-show="getShowLabelFunctions.path"
+              placeholder="Path"
+            />
           </n-form-item>
         </n-gi>
 
@@ -33,7 +39,13 @@
             label="Value"
             path="value"
           >
-            <n-input v-model:value="formValues.value" placeholder="Value" />
+            <n-auto-complete
+              v-model:value="formValues.value"
+              :options="options.value"
+              :render-label="renderLabel"
+              :get-show="getShowLabelFunctions.value"
+              placeholder="Value"
+            />
           </n-form-item>
         </n-gi>
 
@@ -61,6 +73,12 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue"
 
 import { eventBus, Events } from "@/event-bus"
 import { Condition, ConditionType } from "@/types"
+import {
+  autocompleteOptions,
+  getAutocompleteOptions,
+  getShowLabel,
+  renderLabel,
+} from "@/utils"
 
 import { getAvailableOperators } from "./utils"
 
@@ -91,6 +109,10 @@ const valueFormRule = computed<FormItemRule[]>(() => [
   },
   {
     validator: (_, value) => {
+      if (value.startsWith("$.")) {
+        return true
+      }
+
       if (formValues.type === "number") {
         return !isNaN(parseFloat(value))
       }
@@ -107,6 +129,15 @@ const operatorSelectOptions = computed(() =>
 
 const formRef = ref<FormInst>()
 const valueFormRef = ref<FormItemInst>()
+const getShowLabelFunctions = {
+  path: getShowLabel("response"),
+  value: getShowLabel("all"),
+}
+
+const options = {
+  path: getAutocompleteOptions("response"),
+  value: autocompleteOptions,
+}
 
 watch(
   () => formValues.type,
