@@ -38,6 +38,7 @@ export type ValidationRule = {
   requestUrlParameter?: GenericObject
   skip: boolean
   requestBody?: GenericObject
+  requestHeader?: GenericObject
   condition: Condition | BooleanCondition
   method: HTTPMethod // TODO: validate possible HTTP method
   failScore: number
