@@ -28,12 +28,15 @@ onBeforeMount(async () => {
   <span v-if="isLoading"> Loading </span>
   <div v-else-if="hasError">Error!</div>
   <div v-else>
-    <n-space vertical>
-      <validation-list-item
-        v-for="validation in validationList"
-        :key="validation.validationId"
-        :validation="validation"
-      />
+    <n-space :size="32" vertical>
+      <n-space vertical>
+        <validation-list-item
+          v-for="validation in validationList"
+          :key="validation.validationId"
+          :validation="validation"
+        />
+      </n-space>
+
       <router-link class="create-validation" to="/validations/create">
         <n-button type="primary"> Create new validation </n-button>
       </router-link>
