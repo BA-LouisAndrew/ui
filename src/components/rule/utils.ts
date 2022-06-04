@@ -143,6 +143,13 @@ const validateConditionProperties = (condition: any) => {
   const isPropsValid = props.every((key) => condition[key] !== undefined)
 
   if (condition.type === "number") {
+    if (
+      typeof condition.value === "string" &&
+      condition.value.startsWith("$")
+    ) {
+      return true
+    }
+
     return isPropsValid && !isNaN(parseFloat(condition.value))
   }
 
