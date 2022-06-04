@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AutoCompleteOption, NTag, SelectOption } from "naive-ui"
+import { AutoCompleteOption, NTag, SelectOption, TagProps } from "naive-ui"
 import { h, provide, ref, VNodeChild, watch } from "vue"
 
 import { AutocompleteType } from "@/types"
@@ -24,7 +24,7 @@ const getAutocompleteOptions = (group: AutocompleteType) => {
 }
 
 const renderLabel = (option: SelectOption): VNodeChild => {
-  let type
+  let type: TagProps["type"]
   switch (option.group) {
     case "customer":
       type = "info"
