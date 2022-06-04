@@ -24,5 +24,6 @@ export const useFetch = <T = object>(endpoint: string) => {
     updateUrl: (newEndpoint: string) => {
       url.value = makeUrl(newEndpoint)
     },
+    _delete: axios.delete,
   }
 }

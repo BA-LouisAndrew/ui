@@ -8,7 +8,7 @@
               v-model:value="formValues.path"
               :options="options.path"
               :render-label="renderLabel"
-              :get-show="getShowLabelFunctions.path"
+              :get-show="getShowLabel"
               placeholder="Path"
             />
           </n-form-item>
@@ -43,7 +43,7 @@
               v-model:value="formValues.value"
               :options="options.value"
               :render-label="renderLabel"
-              :get-show="getShowLabelFunctions.value"
+              :get-show="getShowLabel"
               placeholder="Value"
             />
           </n-form-item>
@@ -71,14 +71,9 @@
 import { FormInst, FormItemInst, FormItemRule } from "naive-ui"
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue"
 
+import { useAutocomplete } from "@/composable/useAutoComplete"
 import { eventBus, Events } from "@/event-bus"
 import { Condition, ConditionType } from "@/types"
-import {
-  autocompleteOptions,
-  getAutocompleteOptions,
-  getShowLabel,
-  renderLabel,
-} from "@/utils"
 
 import { getAvailableOperators } from "./utils"
 
@@ -92,6 +87,8 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined,
 })
 const emit = defineEmits(["update:value", "delete"])
+
+const { getAutocompleteOptions, getShowLabel, renderLabel } = useAutocomplete()
 
 const formValues = reactive({
   path: props.value?.path || "",
@@ -129,14 +126,10 @@ const operatorSelectOptions = computed(() =>
 
 const formRef = ref<FormInst>()
 const valueFormRef = ref<FormItemInst>()
-const getShowLabelFunctions = {
-  path: getShowLabel("response"),
-  value: getShowLabel("all"),
-}
 
 const options = {
   path: getAutocompleteOptions("response"),
-  value: autocompleteOptions,
+  value: getAutocompleteOptions("all"),
 }
 
 watch(

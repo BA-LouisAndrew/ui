@@ -1,13 +1,5 @@
-import {
-  AutoCompleteGroupOption,
-  AutoCompleteOption,
-  NTag,
-  SelectOption,
-} from "naive-ui"
 import { v4 } from "uuid"
-import { h, VNodeChild } from "vue"
 
-import { conditions } from "./seed"
 import { Validation } from "./types"
 export const createUuid = () => v4()
 export const createMappedObject = <T>(array: T[]) =>
@@ -18,9 +10,7 @@ export const isValidationRunning = (validation: Validation) => {
   return runnedChecks < totalChecks - skippedChecks.length
 }
 
-export type AutocompleteType = "customer" | "response" | "all"
-
-export const autocompleteOptions: AutoCompleteOption[] = [
+export const BASE_AUTOCOMPLETE_OPTIONS = [
   {
     content: "Customer's first name",
     value: "$.customer.firstName",
@@ -106,26 +96,3 @@ export const autocompleteOptions: AutoCompleteOption[] = [
     group: "response",
   },
 ]
-
-export const getAutocompleteOptions = (group: "response" | "customer") =>
-  autocompleteOptions.filter((option) => option.group === group)
-
-export const renderLabel = (option: SelectOption): VNodeChild => {
-  const type = option.group === "customer" ? "info" : "success"
-
-  return [
-    option.label as string,
-    " ",
-    h(NTag, { size: "small", type }, { default: () => option.content }),
-  ]
-}
-
-export const getShowLabel = (type: AutocompleteType) => (value: string) => {
-  const conditions = [
-    value.startsWith("$"),
-    type !== "response" && value.toLowerCase().startsWith("customer"),
-    type !== "customer" && value.toLowerCase().startsWith("response"),
-  ]
-
-  return conditions.some(Boolean)
-}

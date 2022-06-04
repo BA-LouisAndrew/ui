@@ -6,6 +6,8 @@ export const Events = {
   NO_CONDITION_DETECTED: "no_condition",
   NO_BOOLEAN_CONDITION: "no_bool_condition",
   VALIDATE_RETRY_STRATEGY: "validate_retry",
+  SHOW_SECRETS_DIALOG: "show_secrets",
+  REFETCH_SECRETS: "refetch_secrets",
 }
 
 export { eventBus }

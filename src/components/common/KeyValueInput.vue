@@ -10,7 +10,7 @@
       <n-auto-complete
         v-model:value="keyValuePairs[id].value"
         :options="options"
-        :get-show="showLabelFunction"
+        :get-show="getShowLabel"
         :render-label="renderLabel"
         placeholder="Value"
       />
@@ -36,17 +36,14 @@
 import { TrashSharp } from "@vicons/ionicons5"
 import { computed, reactive, watch } from "vue"
 
+import { useAutocomplete } from "@/composable/useAutoComplete"
 import { KeyValuePair, MappedObject } from "@/types"
-import {
-  createMappedObject,
-  createUuid,
-  getAutocompleteOptions,
-  getShowLabel,
-  renderLabel,
-} from "@/utils"
+import { createMappedObject, createUuid } from "@/utils"
 
 const emit = defineEmits(["update:key-value-pairs"])
 const props = defineProps<{ keyValuePairs?: KeyValuePair[] }>()
+
+const { getAutocompleteOptions, getShowLabel, renderLabel } = useAutocomplete()
 
 const keyValuePairs = reactive<MappedObject<KeyValuePair>>(
   createMappedObject(props.keyValuePairs || [])
@@ -61,8 +58,7 @@ const addKeyValuePair = () => {
   }
 }
 
-const options = getAutocompleteOptions("customer")
-const showLabelFunction = getShowLabel("customer")
+const options = getAutocompleteOptions("!response")
 
 const deleteKeyValuePair = (id: string) => {
   delete keyValuePairs[id]

@@ -3,11 +3,13 @@
   <div v-else-if="hasError">Error!</div>
   <div v-else>
     <n-spin :show="isActionLoading" size="large" stroke="#fff">
-      <RuleForm
-        :rule="validationRule!"
-        @update="updateRule"
-        @delete="deleteRule"
-      />
+      <auto-complete-provider :secrets="secrets">
+        <RuleForm
+          :rule="validationRule!"
+          @update="updateRule"
+          @delete="deleteRule"
+        />
+      </auto-complete-provider>
       <template #description>
         <h3 style="color: white">
           {{ actionDescription }}
@@ -23,6 +25,7 @@ import { useNotification } from "naive-ui"
 import { onBeforeMount, provide, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
+import AutoCompleteProvider from "@/components/common/AutoCompleteProvider.vue"
 import RuleForm from "@/components/rule/RuleForm.vue"
 import { useFetch } from "@/composable/useFetch"
 import { BackendError, ValidationRule } from "@/types"
@@ -30,6 +33,7 @@ import { BackendError, ValidationRule } from "@/types"
 const { params } = useRoute()
 const { push } = useRouter()
 const notification = useNotification()
+
 const {
   get: getValidationRule,
   hasError,
@@ -37,6 +41,7 @@ const {
   put: putUpdateRule,
   delete: deleteRuleMutation,
 } = useFetch<ValidationRule>("/rules/" + params.ruleName)
+const { get: getSecretKeys } = useFetch<string[]>("/secrets/")
 
 provide("notification", notification)
 const { error } = notification
@@ -44,6 +49,7 @@ const { error } = notification
 const validationRule = ref<ValidationRule | null>()
 const isActionLoading = ref(false)
 const actionDescription = ref("")
+const secrets = ref<string[]>([])
 
 const updateRule = async (rule: ValidationRule) => {
   isActionLoading.value = true
@@ -91,6 +97,9 @@ onBeforeMount(async () => {
   isLoading.value = true
   try {
     const { data } = await getValidationRule()
+    const { data: secretKeys } = await getSecretKeys()
+
+    secrets.value = secretKeys
     validationRule.value = data
   } catch {
     hasError.value = true

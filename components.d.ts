@@ -5,6 +5,7 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AutoCompleteProvider: typeof import('./src/components/common/AutoCompleteProvider.vue')['default']
     ConditionCard: typeof import('./src/components/rule/ConditionCard.vue')['default']
     ConditionList: typeof import('./src/components/rule/ConditionList.vue')['default']
     CustomerForm: typeof import('./src/components/validation/CustomerForm.vue')['default']
@@ -19,6 +20,7 @@ declare module '@vue/runtime-core' {
     NCollapse: typeof import('naive-ui')['NCollapse']
     NCollapseItem: typeof import('naive-ui')['NCollapseItem']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
+    NDialog: typeof import('naive-ui')['NDialog']
     NForm: typeof import('naive-ui')['NForm']
     NFormItem: typeof import('naive-ui')['NFormItem']
     NFormItemGi: typeof import('naive-ui')['NFormItemGi']
@@ -30,6 +32,7 @@ declare module '@vue/runtime-core' {
     NInput: typeof import('naive-ui')['NInput']
     NInputNumber: typeof import('naive-ui')['NInputNumber']
     NMenu: typeof import('naive-ui')['NMenu']
+    NModal: typeof import('naive-ui')['NModal']
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
     NNumberAnimation: typeof import('naive-ui')['NNumberAnimation']
     NPopconfirm: typeof import('naive-ui')['NPopconfirm']
@@ -50,6 +53,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     RuleForm: typeof import('./src/components/rule/RuleForm.vue')['default']
     RuleListItem: typeof import('./src/components/rule-list/RuleListItem.vue')['default']
+    Secrets: typeof import('./src/components/rule-list/Secrets.vue')['default']
     ValidationListItem: typeof import('./src/components/validation-list/ValidationListItem.vue')['default']
     ValidationProgress: typeof import('./src/components/validation/ValidationProgress.vue')['default']
   }

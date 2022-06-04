@@ -70,6 +70,10 @@
               <n-form-item label="Request body">
                 <key-value-input v-model:key-value-pairs="requestBody" />
               </n-form-item>
+
+              <n-form-item label="Request header">
+                <key-value-input v-model:key-value-pairs="requestHeader" />
+              </n-form-item>
             </n-space>
           </n-form>
         </n-gi>
@@ -149,6 +153,10 @@ const requestUrlParameter = ref(
 const requestBody = ref(
   genericObjectToKeyValuePairs(props.rule?.requestBody || {})
 )
+const requestHeader = ref(
+  genericObjectToKeyValuePairs(props.rule?.requestHeader || {})
+)
+
 const condition = reactive(getConditionsProps(props.rule))
 const retryStrategy = ref(props.rule?.retryStrategy || undefined)
 
@@ -179,7 +187,6 @@ const isFormValid = async (value: ValidationRule) =>
       if (!errors) {
         const isConditionValid = validateCondition(value.condition)
         const isRetryStrategyValid = validateRetryStrategy(value.retryStrategy)
-        console.log({ isConditionValid, isRetryStrategyValid })
         return resolve(isConditionValid && isRetryStrategyValid)
       }
 
@@ -203,6 +210,7 @@ const getRuleValue = (): ValidationRule => {
     requestUrlParameter: keyValuePairsToGenericObject(
       requestUrlParameter.value
     ),
+    requestHeader: keyValuePairsToGenericObject(requestHeader.value),
     retryStrategy: retryStrategy.value,
   }
 }

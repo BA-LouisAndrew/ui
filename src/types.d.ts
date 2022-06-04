@@ -1,6 +1,13 @@
 export type Operator = string // TODO
 export type ConditionType = "string" | "number" | "array" | "boolean"
 
+export type AutocompleteType =
+  | "customer"
+  | "response"
+  | "all"
+  | "secrets"
+  | "!response"
+
 export type KeyValuePair = {
   key: string
   value: string
@@ -38,6 +45,7 @@ export type ValidationRule = {
   requestUrlParameter?: GenericObject
   skip: boolean
   requestBody?: GenericObject
+  requestHeader?: GenericObject
   condition: Condition | BooleanCondition
   method: HTTPMethod // TODO: validate possible HTTP method
   failScore: number
