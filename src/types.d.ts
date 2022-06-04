@@ -1,6 +1,13 @@
 export type Operator = string // TODO
 export type ConditionType = "string" | "number" | "array" | "boolean"
 
+export type AutocompleteType =
+  | "customer"
+  | "response"
+  | "all"
+  | "secrets"
+  | "!response"
+
 export type KeyValuePair = {
   key: string
   value: string

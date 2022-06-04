@@ -5,6 +5,7 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AutoCompleteProvider: typeof import('./src/components/common/AutoCompleteProvider.vue')['default']
     ConditionCard: typeof import('./src/components/rule/ConditionCard.vue')['default']
     ConditionList: typeof import('./src/components/rule/ConditionList.vue')['default']
     CustomerForm: typeof import('./src/components/validation/CustomerForm.vue')['default']

@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { darkTheme } from "naive-ui"
+import { ref } from "vue"
 
+import AutoCompleteProvider from "./components/common/AutoCompleteProvider.vue"
 import Header from "./components/common/Header.vue"
 import { themeOverrides } from "./theme"
+
+const secrets = ref<string[]>(["API_KEY"])
 </script>
 
 <template>
   <n-config-provider :theme-overrides="themeOverrides" :theme="darkTheme">
     <n-notification-provider>
-      <n-space vertical>
-        <Header />
-        <router-view />
-      </n-space>
+      <auto-complete-provider :secrets="secrets">
+        <n-space vertical>
+          <Header />
+          <router-view />
+        </n-space>
+      </auto-complete-provider>
     </n-notification-provider>
   </n-config-provider>
 </template>
