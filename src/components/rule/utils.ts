@@ -202,7 +202,7 @@ export const normalizeConditionValue = (condition: Condition) => {
   }
 
   if (type === "boolean") {
-    return value === "true"
+    return value === true || value === "true"
   }
 
   return value
