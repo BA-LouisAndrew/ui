@@ -68,7 +68,10 @@ onBeforeMount(async () => {
   try {
     const { data } = await getRulesList()
 
-    rulesList.value = data
+    rulesList.value = [...data].sort(
+      (a, b) => (a.skip ? 1 : 0) - (b.skip ? 1 : 0)
+    )
+
     await fetchSecretKeys()
   } catch {
     hasError.value = true

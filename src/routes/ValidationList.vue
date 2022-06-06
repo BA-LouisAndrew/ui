@@ -15,7 +15,11 @@ onBeforeMount(async () => {
   isLoading.value = true
   try {
     const { data } = await getValidationLists()
-    validationList.value = data
+    validationList.value = [...data].sort(
+      (a, b) =>
+        new Date(b.additionalInfo.startDate).getTime() -
+        new Date(a.additionalInfo.startDate).getTime()
+    )
   } catch {
     hasError.value = true
   } finally {
