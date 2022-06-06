@@ -25,7 +25,7 @@ export const presetCustomers: SampleCustomer[] = [
     },
   },
   {
-    label: "Berlin-based customer",
+    label: "Berlin-based customer (not registered, domain blacklisted)",
     key: "de",
     data: {
       firstName: "G.G.",
@@ -42,7 +42,7 @@ export const presetCustomers: SampleCustomer[] = [
     },
   },
   {
-    label: "Italy-based suspicious customer",
+    label: "Italy-based customer (suspicious)",
     key: "sus",
     data: {
       firstName: "Masha and the",
@@ -59,7 +59,7 @@ export const presetCustomers: SampleCustomer[] = [
     },
   },
   {
-    label: "France-based fraudulent customer",
+    label: "France-based customer (not-registered, blacklisted)",
     key: "fr",
     data: {
       firstName: "Thomas",
@@ -76,7 +76,7 @@ export const presetCustomers: SampleCustomer[] = [
     },
   },
   {
-    label: "US-based fraudulent customer",
+    label: "US-based customer (blacklisted-email)",
     key: "us-fraud",
     data: {
       firstName: "Scooby",
