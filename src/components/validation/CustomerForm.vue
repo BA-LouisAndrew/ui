@@ -31,7 +31,9 @@ const onSubmit = () => {
 }
 
 const applySampleCustomer = (sampleCustomer: Customer) => {
-  Object.assign(formValues, sampleCustomer)
+  Object.assign(formValues, {
+    ...sampleCustomer,
+  })
 }
 
 const formRules: { [key: string]: FormItemRule | FormItemRule[] } = {
