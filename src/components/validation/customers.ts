@@ -25,7 +25,7 @@ export const presetCustomers: SampleCustomer[] = [
     },
   },
   {
-    label: "Berlin-based customer (not registered, domain blacklisted)",
+    label: "Berlin-based customer (registered, domain blacklisted)",
     key: "de",
     data: {
       firstName: "G.G.",
