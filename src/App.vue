@@ -6,7 +6,7 @@ import { themeOverrides } from "./theme"
 </script>
 
 <template>
-  <n-config-provider :theme-overrides="themeOverrides" :theme="darkTheme">
+  <n-config-provider :theme-overrides="themeOverrides">
     <n-notification-provider>
       <n-space vertical>
         <Header />
@@ -18,8 +18,8 @@ import { themeOverrides } from "./theme"
 
 <style>
 body {
-  background-color: #222;
-  color: #fff;
+  /* background-color: #222; */
+  /* color: #fff; */
   font-family: "Montserrat", sans-serif;
 }
 #app {
