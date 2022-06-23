@@ -218,7 +218,7 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
 
 .code {
   padding: 16px 24px;
-  background-color: rgba(0, 0, 0, 0.28);
+  background-color: rgba(0, 0, 0, 0.04);
   border-radius: 4px;
 }
 </style>
