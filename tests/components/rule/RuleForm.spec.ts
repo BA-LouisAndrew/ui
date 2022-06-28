@@ -1,7 +1,8 @@
-import { fireEvent, render, RenderOptions } from "@testing-library/vue"
+import { fireEvent, render, RenderOptions, waitFor } from "@testing-library/vue"
 
 import RuleForm from "@/components/rule/RuleForm.vue"
 import { rule } from "@/seed"
+import { Condition, ValidationRule } from "@/types"
 
 describe("Rule form component", () => {
   const renderComponent = (
@@ -37,6 +38,17 @@ describe("Rule form component", () => {
     it("displays the `Save changes` button", () => {
       const { getByRole } = renderComponent()
       expect(getByRole("button", { name: "Save changes" }))
+    })
+
+    it("emits the correct event when the rule is updated", async () => {
+      const { getByPlaceholderText, getByRole, emitted } = renderComponent()
+
+      await fireEvent.update(getByPlaceholderText("Path"), "XX")
+
+      await fireEvent.click(getByRole("button", { name: "Save changes" }))
+      await waitFor(() => expect(emitted()["update"]).toBeTruthy())
+      const newRule = (emitted()["update"][0] as any)[0] as ValidationRule
+      expect((newRule.condition as Condition).path).toEqual("XX")
     })
   })
 
