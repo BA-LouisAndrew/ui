@@ -34,10 +34,10 @@ describe("Condition card", () => {
       "$.statusCode"
     )
   })
-  
-  it("emits `delete` event if the delete button is clicked",async  () => {
+
+  it("emits `delete` event if the delete button is clicked", async () => {
     const { getByRole, emitted } = renderComponent()
-    
+
     await fireEvent.click(getByRole("button", { name: "Delete" }))
     expect(emitted()["delete"]).toBeTruthy()
   })

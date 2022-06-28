@@ -10,8 +10,8 @@ import eslintPlugin from "vite-plugin-eslint"
 export default defineConfig({
   resolve: {
     alias: {
-      "@": resolve(__dirname, "./src")
-    }
+      "@": resolve(__dirname, "./src"),
+    },
   },
   plugins: [
     vue(),
@@ -23,8 +23,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    coverage:{
-      reporter:["text", "json", "html"] 
-    }
+    coverage: {
+      reporter: ["text", "json", "html"],
+      reportsDirectory: "./public/coverage",
+    },
   },
 })
