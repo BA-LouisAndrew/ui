@@ -6,7 +6,7 @@
     "dev": "vite",
     "start": "vite",
     "coverage": "vitest run --coverage",
-    "build": "npm run coverage && vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
