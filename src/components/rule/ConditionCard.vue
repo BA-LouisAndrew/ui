@@ -202,11 +202,11 @@ const typeSelectOptions = [
 const trueFalseSelectOptions = [
   {
     label: "true",
-    value: true,
+    value: "true",
   },
   {
     label: "false",
-    value: false,
+    value: "false",
   },
 ]
 
