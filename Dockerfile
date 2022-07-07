@@ -6,8 +6,7 @@ RUN npm install -g http-server
 # make the 'app' folder the current working directory
 WORKDIR /app
 
-# ENV VITE_BACKEND_URL=http://localhost:8000/
-ENV VITE_BACKEND_URL=https://louisandrew-bachelorarbeit.herokuapp.com/
+ENV VITE_BACKEND_URL=http://localhost:8000/
 
 # copy both 'package.json' and 'package-lock.json' (if available)
 COPY package*.json ./

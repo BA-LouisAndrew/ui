@@ -39,7 +39,19 @@
             label="Value"
             path="value"
           >
+            <n-select
+              v-if="formValues.type === 'boolean'"
+              v-model:value="formValues.value"
+              :options="trueFalseSelectOptions"
+              placeholder="Value"
+            />
+            <n-input-number
+              v-else-if="formValues.type === 'number'"
+              v-model:value="formValues.value"
+              placeholder="Value"
+            />
             <n-auto-complete
+              v-else
               v-model:value="formValues.value"
               :options="options.value"
               :render-label="renderLabel"
@@ -134,13 +146,22 @@ const options = {
 
 watch(
   () => formValues.type,
-  () => {
+  (type, oldValue) => {
+    if (oldValue === "boolean" || oldValue === "number") {
+      formValues.value = ""
+    }
+
     if (
       operatorSelectOptions.value.findIndex(
         (option) => option.value === formValues.operator
       ) === -1
     ) {
       formValues.operator = null
+    }
+
+    if (type === "boolean") {
+      formValues.operator = "eq"
+      formValues.value = ""
     }
 
     valueFormRef.value?.validate()
@@ -175,6 +196,17 @@ const typeSelectOptions = [
   {
     label: "Boolean (true or false)",
     value: "boolean",
+  },
+]
+
+const trueFalseSelectOptions = [
+  {
+    label: "true",
+    value: true,
+  },
+  {
+    label: "false",
+    value: false,
   },
 ]
 
