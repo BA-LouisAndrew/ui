@@ -31,7 +31,7 @@ body {
 }
 
 .info {
-  color: #ababab;
+  color: #7e7e7e;
   font-style: italic;
   font-size: 0.8rem;
 }

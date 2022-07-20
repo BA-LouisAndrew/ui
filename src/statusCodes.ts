@@ -3,66 +3,6 @@
  */
 export const statusCodes: { label: string; value: number }[] = [
   {
-    value: 100,
-    label: "100 - Continue",
-  },
-  {
-    value: 101,
-    label: "101 - Switching protocols",
-  },
-  {
-    value: 200,
-    label: "200 - Ok",
-  },
-  {
-    value: 201,
-    label: "201 - Created",
-  },
-  {
-    value: 202,
-    label: "202 - Accepted",
-  },
-  {
-    value: 203,
-    label: "203 - Non-authoritative information",
-  },
-  {
-    value: 204,
-    label: "204 - No content",
-  },
-  {
-    value: 205,
-    label: "205 - Reset content",
-  },
-  {
-    value: 206,
-    label: "206 - Partial content",
-  },
-  {
-    value: 300,
-    label: "300 - Multiple choices",
-  },
-  {
-    value: 301,
-    label: "301 - Moved permanently",
-  },
-  {
-    value: 302,
-    label: "302 - Found",
-  },
-  {
-    value: 303,
-    label: "303 - See other",
-  },
-  {
-    value: 304,
-    label: "304 - Not modified",
-  },
-  {
-    value: 305,
-    label: "305 - Use proxy",
-  },
-  {
     value: 400,
     label: "400 - Bad request",
   },
@@ -96,7 +36,7 @@ export const statusCodes: { label: string; value: number }[] = [
   },
   {
     value: 408,
-    label: "Request timeout",
+    label: "408 - Request timeout",
   },
   {
     value: 409,
