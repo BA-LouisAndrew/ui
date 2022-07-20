@@ -1,13 +1,13 @@
 <template>
-  <n-space
-    vertical
-    data-testid="retry-strategy-card"
-  >
-    <n-space
-      justify="space-between"
-      align="center"
-    >
-      <h3>Retry Strategy</h3>
+  <n-space vertical data-testid="retry-strategy-card">
+    <n-space justify="space-between" align="center">
+      <n-tooltip trigger="hover">
+        <template #trigger>
+          <h3>Retry Strategy</h3>
+        </template>
+        Defines the strategy to retry a failed HTTP request. Will be passed to a
+        Got instance (retryStrategy attribute)
+      </n-tooltip>
       <n-button
         :type="buttonProps.type"
         size="small"
@@ -17,24 +17,19 @@
         {{ buttonProps.text }}
       </n-button>
     </n-space>
-    <n-card
-      v-if="retryStrategyExists"
-      vertical
-    >
-      <n-form
-        ref="formRef"
-        :model="formValues"
-        :rules="formRules"
-      >
-        <n-grid
-          x-gap="12"
-          :cols="2"
-        >
+    <n-card v-if="retryStrategyExists" vertical>
+      <n-form ref="formRef" :model="formValues" :rules="formRules">
+        <n-grid x-gap="12" :cols="2">
           <n-gi>
-            <n-form-item
-              label="Limit"
-              path="limit"
-            >
+            <n-form-item label="Limit" path="limit">
+              <template #label>
+                <n-tooltip trigger="hover">
+                  <template #trigger>
+                    <label> Limit </label>
+                  </template>
+                  Defines the limit of retries that should be done
+                </n-tooltip>
+              </template>
               <n-input-number
                 v-model:value="formValues.limit"
                 :min="1"
@@ -46,10 +41,17 @@
           </n-gi>
 
           <n-gi>
-            <n-form-item
-              label="Status Codes"
-              path="statusCodes"
-            >
+            <n-form-item label="Status Codes" path="statusCodes">
+              <template #label>
+                <n-tooltip trigger="hover">
+                  <template #trigger>
+                    <label> Status codes </label>
+                  </template>
+                  Determines the status codes, on which a retry should be done.
+                  If no value is provided, retries should be done if the status
+                  code of the response indicates a failed request (4xx / 5xx)
+                </n-tooltip>
+              </template>
               <n-select
                 v-model:value="formValues.statusCodes"
                 :options="statusCodeOptions"
@@ -61,10 +63,7 @@
         </n-grid>
       </n-form>
     </n-card>
-    <span
-      v-else
-      class="info"
-    >
+    <span v-else class="info">
       Adding a retry strategy is optional, but it can be useful to retry the
       request in case the external endpoint is not accessible.
     </span>

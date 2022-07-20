@@ -4,6 +4,15 @@
       <n-grid x-gap="12" y-gap="12" :cols="2">
         <n-gi>
           <n-form-item label="Path" path="path">
+            <template #label>
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <label> Path </label>
+                </template>
+                Defines a JSONPath expression to access information available of
+                the current validation scope
+              </n-tooltip>
+            </template>
             <n-auto-complete
               v-model:value="formValues.path"
               :options="options.path"
@@ -16,6 +25,15 @@
 
         <n-gi>
           <n-form-item label="Type" path="type">
+            <template #label>
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <label> Type </label>
+                </template>
+                Determines the data type of the attribute accessed by the path
+                attribute
+              </n-tooltip>
+            </template>
             <n-select
               v-model:value="formValues.type"
               :options="typeSelectOptions"
@@ -25,6 +43,16 @@
 
         <n-gi>
           <n-form-item label="Operator" path="operator">
+            <template #label>
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <label> Operator </label>
+                </template>
+                Refers to a name of operator to be used to evaluate the
+                condition, by comparing the property accessed by "path"
+                attribute with the value of the "value" attribute
+              </n-tooltip>
+            </template>
             <n-select
               v-model:value="formValues.operator"
               :options="operatorSelectOptions"
@@ -39,6 +67,15 @@
             label="Value"
             path="value"
           >
+            <template #label>
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <label> Value </label>
+                </template>
+                Refers to the expected value of the property accessed by the
+                path attribute, compared using the operator attribute
+              </n-tooltip>
+            </template>
             <n-auto-complete
               v-model:value="formValues.value"
               :options="options.value"
@@ -51,6 +88,16 @@
 
         <n-gi :span="2">
           <n-form-item label="Fail message" path="failMessage">
+            <template #label>
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <label> Fail message </label>
+                </template>
+                Refers to a message that is going to be appended to the
+                validation result’s messages attribute after a validation is
+                completed, if the rule evaluation failed
+              </n-tooltip>
+            </template>
             <n-input
               v-model:value="formValues.failMessage"
               placeholder="Fail message"
@@ -182,7 +229,7 @@ const formRules: { [key: string]: FormItemRule } = {
   path: {
     required: true,
     trigger: "blur",
-    message: "Please add a JSONPath path to the attribute",
+    message: "Please add a JSONPath expression to the attribute",
   },
   type: {
     required: true,

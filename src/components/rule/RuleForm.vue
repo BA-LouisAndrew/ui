@@ -6,18 +6,33 @@
     data-testid="rule-form"
   >
     <n-space vertical>
+      <n-alert type="info" closable>
+        Hover over each form field label to view the description of the field
+      </n-alert>
+
       <h2>
         {{ isEditingRule ? "Editing " : "Create a new rule" }}
         <n-text v-if="isEditingRule" code>
           {{ rule!.name }}
         </n-text>
       </h2>
+
       <n-grid :cols="3" :x-gap="120" :y-gap="32">
         <n-gi :span="1">
           <n-form ref="formRef" :model="formValues" :rules="formRules">
             <n-space vertical>
-              <n-form-item label="Name" path="name">
+              <n-form-item path="name">
+                <template #label>
+                  <n-tooltip trigger="hover">
+                    <template #trigger>
+                      <label for="ruleName"> Name </label>
+                    </template>
+                    Unique identifier of the validation rule
+                  </n-tooltip>
+                </template>
+
                 <n-input
+                  id="ruleName"
                   v-model:value="formValues.name"
                   :disabled="isEditingRule"
                   placeholder="Name"
@@ -25,12 +40,30 @@
               </n-form-item>
 
               <n-space :size="[32, 0]">
-                <n-form-item label="Enabled" path="enabled">
-                  <n-switch v-model:value="formValues.enabled" />
+                <n-form-item path="enabled">
+                  <template #label>
+                    <n-tooltip trigger="hover">
+                      <template #trigger>
+                        <label for="enabled"> Enabled </label>
+                      </template>
+                      Identifier whether the rule evaluation should be skipped
+                    </n-tooltip>
+                  </template>
+                  <n-switch id="enabled" v-model:value="formValues.enabled" />
                 </n-form-item>
 
-                <n-form-item label="Priority" path="priority" :label-width="64">
+                <n-form-item path="priority" :label-width="64">
+                  <template #label>
+                    <n-tooltip trigger="hover">
+                      <template #trigger>
+                        <label for="priority"> Priority </label>
+                      </template>
+                      Priority order of the rule evaluation. Rules with higher
+                      priority will be evaluated first
+                    </n-tooltip>
+                  </template>
                   <n-input-number
+                    id="priority"
                     v-model:value="formValues.priority"
                     class="priority-input"
                     :min="0"
@@ -40,39 +73,105 @@
                 </n-form-item>
               </n-space>
 
-              <n-form-item label="Endpoint" path="endpoint">
-                <n-input v-model:value="formValues.endpoint" />
+              <n-form-item path="endpoint">
+                <template #label>
+                  <n-tooltip trigger="hover">
+                    <template #trigger>
+                      <label for="endpoint"> Endpoint </label>
+                    </template>
+                    URL pointing to an external endpoint, to which an HTTP
+                    request should be made
+                  </n-tooltip>
+                </template>
+                <n-input id="endpoint" v-model:value="formValues.endpoint" />
               </n-form-item>
 
-              <n-form-item label="Method" path="method">
+              <n-form-item path="method">
+                <template #label>
+                  <n-tooltip trigger="hover">
+                    <template #trigger>
+                      <label for="method"> Method </label>
+                    </template>
+                    HTTP method of the HTTP request
+                  </n-tooltip>
+                </template>
                 <n-select
+                  id="method"
                   v-model:value="formValues.method"
                   :options="httpMethodOptions"
                 />
               </n-form-item>
 
               <n-form-item label="Fail score" path="failScore">
+                <template #label>
+                  <n-tooltip trigger="hover">
+                    <template #trigger>
+                      <label for="failScore"> Fail score </label>
+                    </template>
+                    Determines the severity of the rule if the evaluation failed
+                    in a numerical number, ranging from 0 to 1
+                  </n-tooltip>
+                </template>
                 <n-input-number
+                  id="failScore"
                   v-model:value="formValues.failScore"
                   :min="0"
                   :max="1"
                   :step="0.1"
+                  :default-value="0.5"
                   placeholder="Fail score"
                 />
               </n-form-item>
 
               <n-form-item label="Request URL parameter">
+                <template #label>
+                  <n-tooltip trigger="hover">
+                    <template #trigger>
+                      <label for="requestUrlParameter">
+                        Request URL parameter
+                      </label>
+                    </template>
+                    Used to update the values on the endpoint field with a
+                    dynamic value. Please prefix the variable on the endpoint
+                    field with a "$" sign. JSONPath expression is supported here
+                  </n-tooltip>
+                </template>
                 <key-value-input
+                  id="requestUrlParameter"
                   v-model:key-value-pairs="requestUrlParameter"
                 />
               </n-form-item>
 
               <n-form-item label="Request body">
-                <key-value-input v-model:key-value-pairs="requestBody" />
+                <template #label>
+                  <n-tooltip trigger="hover">
+                    <template #trigger>
+                      <label for="requestBody"> Request body </label>
+                    </template>
+                    Request body to be sent to the external endpoint on a POST
+                    and PUT request. JSONPath expression is supported here
+                  </n-tooltip>
+                </template>
+                <key-value-input
+                  id="requestBody"
+                  v-model:key-value-pairs="requestBody"
+                />
               </n-form-item>
 
               <n-form-item label="Request header">
-                <key-value-input v-model:key-value-pairs="requestHeader" />
+                <template #label>
+                  <n-tooltip trigger="hover">
+                    <template #trigger>
+                      <label for="requestHeader"> Request header </label>
+                    </template>
+                    Request header to be sent to the external endpoint during
+                    the request. JSONPath expression is supported here
+                  </n-tooltip>
+                </template>
+                <key-value-input
+                  id="requestHeader"
+                  v-model:key-value-pairs="requestHeader"
+                />
               </n-form-item>
             </n-space>
           </n-form>
@@ -119,7 +218,7 @@
 </template>
 
 <script setup lang="ts">
-import { AlertCircle } from "@vicons/ionicons5"
+import { AlertCircle, HelpCircleOutline } from "@vicons/ionicons5"
 import { FormInst, FormItemRule } from "naive-ui"
 import { reactive, ref } from "vue"
 
@@ -251,5 +350,9 @@ const formRules: { [key: string]: FormItemRule } = {
 <style lang="scss" scoped>
 .priority-input {
   width: 86px;
+}
+
+.info {
+  font-size: 12px;
 }
 </style>

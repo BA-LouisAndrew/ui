@@ -1,7 +1,13 @@
 <template>
   <n-space vertical>
     <n-space justify="space-between" align="center">
-      <h3>Conditions</h3>
+      <n-tooltip trigger="hover">
+        <template #trigger>
+          <h3>Conditions</h3>
+        </template>
+        Defines how the response returned by the external endpoint should be
+        structured to pass a rule evaluation
+      </n-tooltip>
       <n-button secondary type="primary" size="small" @click="addNewCondition">
         Add condition
       </n-button>
@@ -107,6 +113,11 @@ watch(booleanCondition, () =>
 
 watch(displayBooleanConditionInput, (value, oldValue) => {
   if (value && !oldValue) {
+    booleanCondition.value = "all"
+    return
+  }
+
+  if (!value && oldValue) {
     booleanCondition.value = null
   }
 })
