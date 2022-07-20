@@ -45,6 +45,6 @@ describe("Validation Progress component", () => {
     })
 
     expect(getByText(event.name)).toBeTruthy()
-    expect(getByText("Rule validation is running")).toBeTruthy()
+    expect(getByText("Rule evaluation is running")).toBeTruthy()
   })
 })

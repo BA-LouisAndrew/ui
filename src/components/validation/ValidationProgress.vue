@@ -48,14 +48,14 @@ const getTimelineItemStatus = (status: ValidationEventStatus) => {
 const getTimelineItemContent = (status: ValidationEventStatus) => {
   switch (status) {
     case "PASSED":
-      return "Rule validation passed!"
+      return "Rule evaluation passed!"
     case "FAILED":
-      return "Rule validation failed!"
+      return "Rule evaluation failed!"
     case "RUNNING":
-      return "Rule validation is running"
+      return "Rule evaluation is running"
     case "NOT_STARTED":
     default:
-      return "Rule validation is queued"
+      return "Rule evaluation is queued"
   }
 }
 
@@ -95,7 +95,7 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
       </n-statistic>
     </n-space>
 
-    <n-space :size="[128, 48]">
+    <n-space :size="[128, 48]" justify="space-between">
       <n-timeline class="timeline">
         <n-timeline-item
           v-for="skippedCheck in validation.skippedChecks"
@@ -107,9 +107,7 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
             </n-h5>
           </template>
 
-          <n-text :depth="3">
-            <n-text code>{{ skippedCheck }}</n-text> is skipped
-          </n-text>
+          <n-text :depth="3"> Rule evaluation is skipped </n-text>
 
           <template #icon>
             <n-icon size="24" :depth="3">
@@ -186,7 +184,7 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
         </n-timeline-item>
       </n-timeline>
 
-      <n-space :size="16" style="overflow: auto" vertical>
+      <n-space :size="16" align="end" style="overflow: auto" vertical>
         <n-text code> Customer payload </n-text>
         <div class="code">
           <n-code
@@ -210,6 +208,7 @@ const TIME_FORMAT = "dd.MMM.yyyy - hh:mm:ss"
 .timeline {
   margin-left: 8px;
   margin-top: 16px;
+  width: 60vw;
 }
 
 .ghost {
