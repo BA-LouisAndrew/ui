@@ -3,7 +3,7 @@ FROM node:16-alpine
 # install simple http server for serving static content
 RUN npm install -g http-server
 
-ENV VITE_BACKEND_URL=http://localhost:8000
+ENV VITE_BACKEND_URL=http://localhost:8000/
 
 # make the 'app' folder the current working directory
 WORKDIR /app
