@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { darkTheme } from "naive-ui"
-
 import Header from "./components/common/Header.vue"
 import { themeOverrides } from "./theme"
 </script>
@@ -40,6 +38,12 @@ body {
   animation-name: rotation-animation;
   animation-duration: 1.5s;
   animation-iteration-count: infinite;
+}
+
+.code {
+  padding: 16px 24px;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
 }
 
 @keyframes rotation-animation {
