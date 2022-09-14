@@ -13,7 +13,6 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(),
     eslintPlugin(),
     Components({
       resolvers: [NaiveUiResolver()],
